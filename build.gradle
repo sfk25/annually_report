@@ -10,6 +10,15 @@ buildscript {
 	}
 }
 
+plugins {
+	id "org.flywaydb.flyway" version "5.1.4"
+}
+
+flyway {
+	url = 'jdbc:mysql://localhost/sfk25'
+	user = 'root'
+}
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
