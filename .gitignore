@@ -24,3 +24,12 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+
+### Angular ###
+/src/main/resources/static/js/*
+!.gitkeep
+/src/main/resources/static/css/*
+!.gitkeep
+/src/main/resources/templates/*
+!.gitkeep
+
