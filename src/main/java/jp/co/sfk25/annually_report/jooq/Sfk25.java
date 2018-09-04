@@ -11,6 +11,7 @@ import java.util.List;
 import javax.annotation.Generated;
 
 import jp.co.sfk25.annually_report.jooq.tables.Articles;
+import jp.co.sfk25.annually_report.jooq.tables.ArticlesTags;
 import jp.co.sfk25.annually_report.jooq.tables.Comments;
 import jp.co.sfk25.annually_report.jooq.tables.FlywaySchemaHistory;
 import jp.co.sfk25.annually_report.jooq.tables.Likes;
@@ -35,7 +36,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Sfk25 extends SchemaImpl {
 
-    private static final long serialVersionUID = -1325398843;
+    private static final long serialVersionUID = -1389880605;
 
     /**
      * The reference instance of <code>sfk25</code>
@@ -46,6 +47,11 @@ public class Sfk25 extends SchemaImpl {
      * The table <code>sfk25.articles</code>.
      */
     public final Articles ARTICLES = jp.co.sfk25.annually_report.jooq.tables.Articles.ARTICLES;
+
+    /**
+     * The table <code>sfk25.articles_tags</code>.
+     */
+    public final ArticlesTags ARTICLES_TAGS = jp.co.sfk25.annually_report.jooq.tables.ArticlesTags.ARTICLES_TAGS;
 
     /**
      * The table <code>sfk25.comments</code>.
@@ -98,6 +104,7 @@ public class Sfk25 extends SchemaImpl {
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
             Articles.ARTICLES,
+            ArticlesTags.ARTICLES_TAGS,
             Comments.COMMENTS,
             FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY,
             Likes.LIKES,

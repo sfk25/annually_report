@@ -7,6 +7,7 @@ package jp.co.sfk25.annually_report.jooq;
 import javax.annotation.Generated;
 
 import jp.co.sfk25.annually_report.jooq.tables.Articles;
+import jp.co.sfk25.annually_report.jooq.tables.ArticlesTags;
 import jp.co.sfk25.annually_report.jooq.tables.Comments;
 import jp.co.sfk25.annually_report.jooq.tables.FlywaySchemaHistory;
 import jp.co.sfk25.annually_report.jooq.tables.Likes;
@@ -39,6 +40,7 @@ public class Indexes {
     public static final Index ARTICLES_IDX_ARTICLE_VALUE = Indexes0.ARTICLES_IDX_ARTICLE_VALUE;
     public static final Index ARTICLES_PRIMARY = Indexes0.ARTICLES_PRIMARY;
     public static final Index ARTICLES_USER_ID = Indexes0.ARTICLES_USER_ID;
+    public static final Index ARTICLES_TAGS_PRIMARY = Indexes0.ARTICLES_TAGS_PRIMARY;
     public static final Index COMMENTS_PRIMARY = Indexes0.COMMENTS_PRIMARY;
     public static final Index FLYWAY_SCHEMA_HISTORY_FLYWAY_SCHEMA_HISTORY_S_IDX = Indexes0.FLYWAY_SCHEMA_HISTORY_FLYWAY_SCHEMA_HISTORY_S_IDX;
     public static final Index FLYWAY_SCHEMA_HISTORY_PRIMARY = Indexes0.FLYWAY_SCHEMA_HISTORY_PRIMARY;
@@ -52,10 +54,11 @@ public class Indexes {
     // -------------------------------------------------------------------------
 
     private static class Indexes0 {
-        public static Index ARTICLES_IDX_ARTICLE = Internal.createIndex("idx_article", Articles.ARTICLES, new OrderField[] { Articles.ARTICLES.TAG_IDS, Articles.ARTICLES.TITLE }, false);
+        public static Index ARTICLES_IDX_ARTICLE = Internal.createIndex("idx_article", Articles.ARTICLES, new OrderField[] { Articles.ARTICLES.TITLE }, false);
         public static Index ARTICLES_IDX_ARTICLE_VALUE = Internal.createIndex("idx_article_value", Articles.ARTICLES, new OrderField[] { Articles.ARTICLES.VALUE }, false);
         public static Index ARTICLES_PRIMARY = Internal.createIndex("PRIMARY", Articles.ARTICLES, new OrderField[] { Articles.ARTICLES.ID }, true);
         public static Index ARTICLES_USER_ID = Internal.createIndex("user_id", Articles.ARTICLES, new OrderField[] { Articles.ARTICLES.USER_ID }, false);
+        public static Index ARTICLES_TAGS_PRIMARY = Internal.createIndex("PRIMARY", ArticlesTags.ARTICLES_TAGS, new OrderField[] { ArticlesTags.ARTICLES_TAGS.ARTICLE_ID, ArticlesTags.ARTICLES_TAGS.TAG_ID }, true);
         public static Index COMMENTS_PRIMARY = Internal.createIndex("PRIMARY", Comments.COMMENTS, new OrderField[] { Comments.COMMENTS.ID }, true);
         public static Index FLYWAY_SCHEMA_HISTORY_FLYWAY_SCHEMA_HISTORY_S_IDX = Internal.createIndex("flyway_schema_history_s_idx", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, new OrderField[] { FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.SUCCESS }, false);
         public static Index FLYWAY_SCHEMA_HISTORY_PRIMARY = Internal.createIndex("PRIMARY", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, new OrderField[] { FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK }, true);

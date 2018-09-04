@@ -32,7 +32,7 @@ jooq {
 			driver = 'com.mysql.cj.jdbc.Driver'
 			url = 'jdbc:mysql://localhost/sfk25'
 			user = 'root'
-			password = 'TrigTamaNo.2'
+			password = ''
 		}
 		generator {
 			name = 'org.jooq.util.DefaultGenerator'
@@ -67,6 +67,7 @@ dependencies {
 	runtime 'mysql:mysql-connector-java:8.0.12'
 	jooqRuntime 'mysql:mysql-connector-java:8.0.12'
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+	compileOnly 'org.projectlombok:lombok:1.18.0'
 }
 
 ext['jooq.version'] = '3.10.8'

@@ -7,6 +7,7 @@ package jp.co.sfk25.annually_report.jooq;
 import javax.annotation.Generated;
 
 import jp.co.sfk25.annually_report.jooq.tables.Articles;
+import jp.co.sfk25.annually_report.jooq.tables.ArticlesTags;
 import jp.co.sfk25.annually_report.jooq.tables.Comments;
 import jp.co.sfk25.annually_report.jooq.tables.FlywaySchemaHistory;
 import jp.co.sfk25.annually_report.jooq.tables.Likes;
@@ -31,6 +32,11 @@ public class Tables {
      * The table <code>sfk25.articles</code>.
      */
     public static final Articles ARTICLES = jp.co.sfk25.annually_report.jooq.tables.Articles.ARTICLES;
+
+    /**
+     * The table <code>sfk25.articles_tags</code>.
+     */
+    public static final ArticlesTags ARTICLES_TAGS = jp.co.sfk25.annually_report.jooq.tables.ArticlesTags.ARTICLES_TAGS;
 
     /**
      * The table <code>sfk25.comments</code>.

@@ -7,12 +7,14 @@ package jp.co.sfk25.annually_report.jooq;
 import javax.annotation.Generated;
 
 import jp.co.sfk25.annually_report.jooq.tables.Articles;
+import jp.co.sfk25.annually_report.jooq.tables.ArticlesTags;
 import jp.co.sfk25.annually_report.jooq.tables.Comments;
 import jp.co.sfk25.annually_report.jooq.tables.FlywaySchemaHistory;
 import jp.co.sfk25.annually_report.jooq.tables.Likes;
 import jp.co.sfk25.annually_report.jooq.tables.Tags;
 import jp.co.sfk25.annually_report.jooq.tables.Users;
 import jp.co.sfk25.annually_report.jooq.tables.records.ArticlesRecord;
+import jp.co.sfk25.annually_report.jooq.tables.records.ArticlesTagsRecord;
 import jp.co.sfk25.annually_report.jooq.tables.records.CommentsRecord;
 import jp.co.sfk25.annually_report.jooq.tables.records.FlywaySchemaHistoryRecord;
 import jp.co.sfk25.annually_report.jooq.tables.records.LikesRecord;
@@ -53,6 +55,7 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final UniqueKey<ArticlesRecord> KEY_ARTICLES_PRIMARY = UniqueKeys0.KEY_ARTICLES_PRIMARY;
+    public static final UniqueKey<ArticlesTagsRecord> KEY_ARTICLES_TAGS_PRIMARY = UniqueKeys0.KEY_ARTICLES_TAGS_PRIMARY;
     public static final UniqueKey<CommentsRecord> KEY_COMMENTS_PRIMARY = UniqueKeys0.KEY_COMMENTS_PRIMARY;
     public static final UniqueKey<FlywaySchemaHistoryRecord> KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY = UniqueKeys0.KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY;
     public static final UniqueKey<LikesRecord> KEY_LIKES_PRIMARY = UniqueKeys0.KEY_LIKES_PRIMARY;
@@ -78,6 +81,7 @@ public class Keys {
 
     private static class UniqueKeys0 {
         public static final UniqueKey<ArticlesRecord> KEY_ARTICLES_PRIMARY = Internal.createUniqueKey(Articles.ARTICLES, "KEY_articles_PRIMARY", Articles.ARTICLES.ID);
+        public static final UniqueKey<ArticlesTagsRecord> KEY_ARTICLES_TAGS_PRIMARY = Internal.createUniqueKey(ArticlesTags.ARTICLES_TAGS, "KEY_articles_tags_PRIMARY", ArticlesTags.ARTICLES_TAGS.ARTICLE_ID, ArticlesTags.ARTICLES_TAGS.TAG_ID);
         public static final UniqueKey<CommentsRecord> KEY_COMMENTS_PRIMARY = Internal.createUniqueKey(Comments.COMMENTS, "KEY_comments_PRIMARY", Comments.COMMENTS.ID);
         public static final UniqueKey<FlywaySchemaHistoryRecord> KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY = Internal.createUniqueKey(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, "KEY_flyway_schema_history_PRIMARY", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK);
         public static final UniqueKey<LikesRecord> KEY_LIKES_PRIMARY = Internal.createUniqueKey(Likes.LIKES, "KEY_likes_PRIMARY", Likes.LIKES.ARTICLE_ID, Likes.LIKES.USER_ID);
