@@ -26,9 +26,7 @@
 /.nb-gradle/
 
 ### Angular ###
-/src/main/resources/static/js/*
-!.gitkeep
-/src/main/resources/static/css/*
+/src/main/resources/static/assets/*
 !.gitkeep
 /src/main/resources/templates/*
 !.gitkeep

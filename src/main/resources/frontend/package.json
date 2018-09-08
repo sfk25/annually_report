@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod && mv ./../templates/*.js ./../static/js && mv ./../templates/*.css ./../static/css/",
+    "build": "ng build --prod && mv ./../templates/*.js ./../static/assets && mv ./../templates/*.css ./../static/assets/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
