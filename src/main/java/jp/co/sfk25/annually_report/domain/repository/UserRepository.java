@@ -1,6 +1,6 @@
-package jp.co.sfk25.annually_report.repository;
+package jp.co.sfk25.annually_report.domain.repository;
 
-import jp.co.sfk25.annually_report.domain.User;
+import jp.co.sfk25.annually_report.domain.entity.User;
 import jp.co.sfk25.annually_report.jooq.tables.records.UsersRecord;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
