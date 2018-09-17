@@ -4,8 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "watch": "watch 'npm run build'",
-    "build": "ng build --prod && mv ./../templates/*.js ./../static/assets && mv ./../templates/*.css ./../static/assets/",
+    "watch": "ng build --prod --watch",
+    "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -23,7 +23,6 @@
     "@angular/router": "^6.1.0",
     "core-js": "^2.5.4",
     "rxjs": "^6.0.0",
-    "watch": "^1.0.2",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
