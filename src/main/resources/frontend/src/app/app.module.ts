@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { SampleComponent } from './sample/sample.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { TopComponent } from './top/top.component';
+import { ArticleListComponent } from './article-list/article-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SampleComponent,
-    TopComponent
+    TopComponent,
+    ArticleListComponent
   ],
   imports: [
     HttpClientModule,
