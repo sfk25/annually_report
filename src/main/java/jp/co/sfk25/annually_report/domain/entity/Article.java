@@ -8,15 +8,18 @@ import java.time.LocalDateTime;
 
 @Value
 @RequiredArgsConstructor(staticName = "of")
-public class User {
+public class Article {
 
   private final Integer id;
 
   @NonNull
-  private final String name;
+  private final Integer user_id;
 
   @NonNull
-  private final String password;
+  private final String title;
+
+  @NonNull
+  private final String value;
 
   @NonNull
   private final LocalDateTime created_at;
@@ -24,8 +27,8 @@ public class User {
   @NonNull
   private final LocalDateTime updated_at;
 
-  public static User create(String name, String password) {
+  public static Article create(Integer id, Integer userId, String title, String value) {
     LocalDateTime now = LocalDateTime.now();
-    return User.of(null, name, password, now, now);
+    return Article.of(id, userId, title, value, now, now);
   }
 }

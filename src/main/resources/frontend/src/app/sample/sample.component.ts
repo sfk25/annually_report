@@ -17,7 +17,6 @@ export class SampleComponent implements OnInit {
   }
 
   getUsers(): void {
-
     this.sampleService.getUsers()
       .subscribe(users => this.users = users);
   }

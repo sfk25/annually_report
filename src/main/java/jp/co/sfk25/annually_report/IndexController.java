@@ -15,4 +15,9 @@ public class IndexController {
     public String top() {
         return "index";
     }
+
+    @RequestMapping(value = "/article_list")
+    public String articleList() {
+        return "index";
+    }
 }
