@@ -1,11 +1,12 @@
 package jp.co.sfk25.annually_report.domain.repository;
 
+import jp.co.sfk25.annually_report.controller.Conds;
 import jp.co.sfk25.annually_report.domain.entity.Article;
 import jp.co.sfk25.annually_report.jooq.tables.records.ArticlesRecord;
-import jp.co.sfk25.annually_report.jooq.tables.records.UsersRecord;
 import lombok.RequiredArgsConstructor;
-import org.jooq.DSLContext;
+import org.jooq.*;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -27,6 +28,21 @@ public class ArticleRepository {
     public List<Article> findAll() {
         return dslContext.selectFrom(ARTICLES).fetch(this::toEntity);
     }
+
+
+
+    public List<Article> findByConds(Conds conds) {
+        SelectQuery<ArticlesRecord> query = dslContext.selectFrom(ARTICLES).getQuery();
+
+        if(!StringUtils.isEmpty(conds.getTitle())){
+            Condition condition = ARTICLES.TITLE.like("%" + conds.getTitle() + "%");
+            query.addConditions(Operator.AND, condition);
+        }
+
+        return query.fetch(this::toEntity);
+    }
+
+
 
     private Article toEntity(ArticlesRecord record) {
         return Article.of(

@@ -1,5 +1,6 @@
 package jp.co.sfk25.annually_report.service;
 
+import jp.co.sfk25.annually_report.controller.Conds;
 import jp.co.sfk25.annually_report.domain.entity.Article;
 import jp.co.sfk25.annually_report.domain.repository.ArticleRepository;
 import jp.co.sfk25.annually_report.domain.repository.UserRepository;
@@ -15,5 +16,9 @@ public class ArticleService {
 
     public List<Article> getArticles() {
         return articleRepository.findAll();
+    }
+
+    public List<Article> findByConds(Conds conds){
+        return articleRepository.findByConds(conds);
     }
 }
