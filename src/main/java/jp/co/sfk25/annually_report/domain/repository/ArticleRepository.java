@@ -1,17 +1,16 @@
 package jp.co.sfk25.annually_report.domain.repository;
 
-import jp.co.sfk25.annually_report.domain.entity.User;
+import jp.co.sfk25.annually_report.controller.Conds;
+import jp.co.sfk25.annually_report.domain.entity.Article;
 import jp.co.sfk25.annually_report.jooq.tables.Articles;
 import jp.co.sfk25.annually_report.jooq.tables.Users;
 import jp.co.sfk25.annually_report.jooq.tables.records.ArticlesRecord;
-import jp.co.sfk25.annually_report.domain.entity.Article;
-import jp.co.sfk25.annually_report.controller.Conds;
-import jp.co.sfk25.annually_report.jooq.tables.records.UsersRecord;
+import lombok.RequiredArgsConstructor;
+import org.jooq.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
-import lombok.RequiredArgsConstructor;
+
 import java.util.List;
-import org.jooq.*;
 
 import static jp.co.sfk25.annually_report.jooq.tables.Articles.ARTICLES;
 import static jp.co.sfk25.annually_report.jooq.tables.Users.USERS;
@@ -44,12 +43,15 @@ public class ArticleRepository {
         // TODO processId追加
 
 
+//        SelectJoinStep<Record> query = dslContext.select().from(a);
         SelectQuery<ArticlesRecord> query = dslContext.selectFrom(a).getQuery();
 
         // title
         if(!StringUtils.isEmpty(conds.getTitle())){
             Condition condition = a.TITLE.like("%" + conds.getTitle() + "%");
             query.addConditions(Operator.AND, condition);
+
+//            query.where(a.TITLE.contains(conds.getTitle()));
         }
 
         // groupId
@@ -58,8 +60,11 @@ public class ArticleRepository {
         if(!StringUtils.isEmpty(conds.getUserName())) {
 //            query.addJoin(c, a.USER_ID.eq(c.ID));
             Table<Record> g = a.join(c).on(c.ID.eq(a.USER_ID)).as("g");
-            Condition condition = g.field("user_id").eq(conds.getUserName());
+            Condition condition = g.field(a.USER_ID).eq(Integer.valueOf(conds.getUserName()));
             query.addConditions(Operator.AND, condition);
+
+            // titleの方のif文も通った場合にちゃんと動くか怪しい
+//            query.leftJoin(c).on(a.USER_ID.eq(c.ID)).where(a.USER_ID.eq(Integer.valueOf(conds.getUserName())));
 
 //            Table<UsersRecord> subQuery =
 //                    dslContext.selectFrom(c).where(c.NAME.like("%" + conds.getUserName() + "%")).asTable("subQuery");
