@@ -1,11 +1,10 @@
 package jp.co.sfk25.annually_report.service;
 
-import jp.co.sfk25.annually_report.controller.Conds;
-import jp.co.sfk25.annually_report.domain.entity.Article;
 import jp.co.sfk25.annually_report.domain.repository.ArticleRepository;
-import jp.co.sfk25.annually_report.domain.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
+import jp.co.sfk25.annually_report.domain.entity.Article;
+import jp.co.sfk25.annually_report.controller.Conds;
 import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
