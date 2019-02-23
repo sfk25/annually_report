@@ -60,7 +60,7 @@ public class ArticleRepository {
         if(!StringUtils.isEmpty(conds.getUserName())) {
 //            query.addJoin(c, a.USER_ID.eq(c.ID));
             Table<Record> g = a.join(c).on(c.ID.eq(a.USER_ID)).as("g");
-            Condition condition = g.field(a.USER_ID).eq(Integer.valueOf(conds.getUserName()));
+            Condition condition = g.field(c.NAME).eq(conds.getUserName());
             query.addConditions(Operator.AND, condition);
 
             // titleの方のif文も通った場合にちゃんと動くか怪しい
