@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static jp.co.sfk25.annually_report.jooq.tables.Articles.ARTICLES;
 import static jp.co.sfk25.annually_report.jooq.tables.Users.USERS;
@@ -44,7 +45,7 @@ public class ArticleRepository {
 
 
 //        SelectJoinStep<Record> query = dslContext.select().from(a);
-        SelectQuery<ArticlesRecord> query = dslContext.selectFrom(a).getQuery();
+        SelectQuery<Record> query = dslContext.select(a.fields()).from(a).getQuery();
 
         // title
         if(!StringUtils.isEmpty(conds.getTitle())){
@@ -58,9 +59,10 @@ public class ArticleRepository {
 
         // userName
         if(!StringUtils.isEmpty(conds.getUserName())) {
-//            query.addJoin(c, a.USER_ID.eq(c.ID));
-            Table<Record> g = a.join(c).on(c.ID.eq(a.USER_ID)).as("g");
-            Condition condition = g.field(c.NAME).eq(conds.getUserName());
+            query.addJoin(c, a.USER_ID.eq(c.ID));
+//            Table<Record> g = a.join(c).on(c.ID.eq(a.USER_ID)).as("g");
+//            Condition condition = g.field(c.NAME).eq(conds.getUserName());
+            Condition condition = c.NAME.eq(conds.getUserName());
             query.addConditions(Operator.AND, condition);
 
             // titleの方のif文も通った場合にちゃんと動くか怪しい
@@ -87,7 +89,9 @@ public class ArticleRepository {
 
         // processId
 
-        return query.fetch(this::toEntity);
+        return query.fetchInto(ArticlesRecord.class).stream()
+                .map(this::toEntity)
+                .collect(Collectors.toList());
     }
 
 
