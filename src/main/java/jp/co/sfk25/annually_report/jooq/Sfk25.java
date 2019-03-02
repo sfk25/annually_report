@@ -11,10 +11,13 @@ import java.util.List;
 import javax.annotation.Generated;
 
 import jp.co.sfk25.annually_report.jooq.tables.Articles;
+import jp.co.sfk25.annually_report.jooq.tables.ArticlesProcesses;
 import jp.co.sfk25.annually_report.jooq.tables.ArticlesTags;
 import jp.co.sfk25.annually_report.jooq.tables.Comments;
 import jp.co.sfk25.annually_report.jooq.tables.FlywaySchemaHistory;
+import jp.co.sfk25.annually_report.jooq.tables.Groups;
 import jp.co.sfk25.annually_report.jooq.tables.Likes;
+import jp.co.sfk25.annually_report.jooq.tables.Processes;
 import jp.co.sfk25.annually_report.jooq.tables.Tags;
 import jp.co.sfk25.annually_report.jooq.tables.Users;
 
@@ -36,7 +39,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Sfk25 extends SchemaImpl {
 
-    private static final long serialVersionUID = -1389880605;
+    private static final long serialVersionUID = 1346563463;
 
     /**
      * The reference instance of <code>sfk25</code>
@@ -47,6 +50,11 @@ public class Sfk25 extends SchemaImpl {
      * The table <code>sfk25.articles</code>.
      */
     public final Articles ARTICLES = jp.co.sfk25.annually_report.jooq.tables.Articles.ARTICLES;
+
+    /**
+     * The table <code>sfk25.articles_processes</code>.
+     */
+    public final ArticlesProcesses ARTICLES_PROCESSES = jp.co.sfk25.annually_report.jooq.tables.ArticlesProcesses.ARTICLES_PROCESSES;
 
     /**
      * The table <code>sfk25.articles_tags</code>.
@@ -64,9 +72,19 @@ public class Sfk25 extends SchemaImpl {
     public final FlywaySchemaHistory FLYWAY_SCHEMA_HISTORY = jp.co.sfk25.annually_report.jooq.tables.FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY;
 
     /**
+     * The table <code>sfk25.groups</code>.
+     */
+    public final Groups GROUPS = jp.co.sfk25.annually_report.jooq.tables.Groups.GROUPS;
+
+    /**
      * The table <code>sfk25.likes</code>.
      */
     public final Likes LIKES = jp.co.sfk25.annually_report.jooq.tables.Likes.LIKES;
+
+    /**
+     * The table <code>sfk25.processes</code>.
+     */
+    public final Processes PROCESSES = jp.co.sfk25.annually_report.jooq.tables.Processes.PROCESSES;
 
     /**
      * The table <code>sfk25.tags</code>.
@@ -104,10 +122,13 @@ public class Sfk25 extends SchemaImpl {
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
             Articles.ARTICLES,
+            ArticlesProcesses.ARTICLES_PROCESSES,
             ArticlesTags.ARTICLES_TAGS,
             Comments.COMMENTS,
             FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY,
+            Groups.GROUPS,
             Likes.LIKES,
+            Processes.PROCESSES,
             Tags.TAGS,
             Users.USERS);
     }

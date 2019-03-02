@@ -41,7 +41,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Articles extends TableImpl<ArticlesRecord> {
 
-    private static final long serialVersionUID = 1164509311;
+    private static final long serialVersionUID = -1503934971;
 
     /**
      * The reference instance of <code>sfk25.articles</code>
@@ -85,6 +85,11 @@ public class Articles extends TableImpl<ArticlesRecord> {
      * The column <code>sfk25.articles.updated_at</code>.
      */
     public final TableField<ArticlesRecord, Timestamp> UPDATED_AT = createField("updated_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
+
+    /**
+     * The column <code>sfk25.articles.created_year</code>.
+     */
+    public final TableField<ArticlesRecord, Integer> CREATED_YEAR = createField("created_year", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * Create a <code>sfk25.articles</code> table reference

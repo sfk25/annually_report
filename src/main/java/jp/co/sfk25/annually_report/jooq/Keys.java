@@ -7,17 +7,23 @@ package jp.co.sfk25.annually_report.jooq;
 import javax.annotation.Generated;
 
 import jp.co.sfk25.annually_report.jooq.tables.Articles;
+import jp.co.sfk25.annually_report.jooq.tables.ArticlesProcesses;
 import jp.co.sfk25.annually_report.jooq.tables.ArticlesTags;
 import jp.co.sfk25.annually_report.jooq.tables.Comments;
 import jp.co.sfk25.annually_report.jooq.tables.FlywaySchemaHistory;
+import jp.co.sfk25.annually_report.jooq.tables.Groups;
 import jp.co.sfk25.annually_report.jooq.tables.Likes;
+import jp.co.sfk25.annually_report.jooq.tables.Processes;
 import jp.co.sfk25.annually_report.jooq.tables.Tags;
 import jp.co.sfk25.annually_report.jooq.tables.Users;
+import jp.co.sfk25.annually_report.jooq.tables.records.ArticlesProcessesRecord;
 import jp.co.sfk25.annually_report.jooq.tables.records.ArticlesRecord;
 import jp.co.sfk25.annually_report.jooq.tables.records.ArticlesTagsRecord;
 import jp.co.sfk25.annually_report.jooq.tables.records.CommentsRecord;
 import jp.co.sfk25.annually_report.jooq.tables.records.FlywaySchemaHistoryRecord;
+import jp.co.sfk25.annually_report.jooq.tables.records.GroupsRecord;
 import jp.co.sfk25.annually_report.jooq.tables.records.LikesRecord;
+import jp.co.sfk25.annually_report.jooq.tables.records.ProcessesRecord;
 import jp.co.sfk25.annually_report.jooq.tables.records.TagsRecord;
 import jp.co.sfk25.annually_report.jooq.tables.records.UsersRecord;
 
@@ -47,6 +53,8 @@ public class Keys {
 
     public static final Identity<ArticlesRecord, Integer> IDENTITY_ARTICLES = Identities0.IDENTITY_ARTICLES;
     public static final Identity<CommentsRecord, Integer> IDENTITY_COMMENTS = Identities0.IDENTITY_COMMENTS;
+    public static final Identity<GroupsRecord, Integer> IDENTITY_GROUPS = Identities0.IDENTITY_GROUPS;
+    public static final Identity<ProcessesRecord, Integer> IDENTITY_PROCESSES = Identities0.IDENTITY_PROCESSES;
     public static final Identity<TagsRecord, Integer> IDENTITY_TAGS = Identities0.IDENTITY_TAGS;
     public static final Identity<UsersRecord, Integer> IDENTITY_USERS = Identities0.IDENTITY_USERS;
 
@@ -55,10 +63,13 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final UniqueKey<ArticlesRecord> KEY_ARTICLES_PRIMARY = UniqueKeys0.KEY_ARTICLES_PRIMARY;
+    public static final UniqueKey<ArticlesProcessesRecord> KEY_ARTICLES_PROCESSES_PRIMARY = UniqueKeys0.KEY_ARTICLES_PROCESSES_PRIMARY;
     public static final UniqueKey<ArticlesTagsRecord> KEY_ARTICLES_TAGS_PRIMARY = UniqueKeys0.KEY_ARTICLES_TAGS_PRIMARY;
     public static final UniqueKey<CommentsRecord> KEY_COMMENTS_PRIMARY = UniqueKeys0.KEY_COMMENTS_PRIMARY;
     public static final UniqueKey<FlywaySchemaHistoryRecord> KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY = UniqueKeys0.KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY;
+    public static final UniqueKey<GroupsRecord> KEY_GROUPS_PRIMARY = UniqueKeys0.KEY_GROUPS_PRIMARY;
     public static final UniqueKey<LikesRecord> KEY_LIKES_PRIMARY = UniqueKeys0.KEY_LIKES_PRIMARY;
+    public static final UniqueKey<ProcessesRecord> KEY_PROCESSES_PRIMARY = UniqueKeys0.KEY_PROCESSES_PRIMARY;
     public static final UniqueKey<TagsRecord> KEY_TAGS_PRIMARY = UniqueKeys0.KEY_TAGS_PRIMARY;
     public static final UniqueKey<UsersRecord> KEY_USERS_PRIMARY = UniqueKeys0.KEY_USERS_PRIMARY;
 
@@ -75,16 +86,21 @@ public class Keys {
     private static class Identities0 {
         public static Identity<ArticlesRecord, Integer> IDENTITY_ARTICLES = Internal.createIdentity(Articles.ARTICLES, Articles.ARTICLES.ID);
         public static Identity<CommentsRecord, Integer> IDENTITY_COMMENTS = Internal.createIdentity(Comments.COMMENTS, Comments.COMMENTS.ID);
+        public static Identity<GroupsRecord, Integer> IDENTITY_GROUPS = Internal.createIdentity(Groups.GROUPS, Groups.GROUPS.ID);
+        public static Identity<ProcessesRecord, Integer> IDENTITY_PROCESSES = Internal.createIdentity(Processes.PROCESSES, Processes.PROCESSES.ID);
         public static Identity<TagsRecord, Integer> IDENTITY_TAGS = Internal.createIdentity(Tags.TAGS, Tags.TAGS.ID);
         public static Identity<UsersRecord, Integer> IDENTITY_USERS = Internal.createIdentity(Users.USERS, Users.USERS.ID);
     }
 
     private static class UniqueKeys0 {
         public static final UniqueKey<ArticlesRecord> KEY_ARTICLES_PRIMARY = Internal.createUniqueKey(Articles.ARTICLES, "KEY_articles_PRIMARY", Articles.ARTICLES.ID);
+        public static final UniqueKey<ArticlesProcessesRecord> KEY_ARTICLES_PROCESSES_PRIMARY = Internal.createUniqueKey(ArticlesProcesses.ARTICLES_PROCESSES, "KEY_articles_processes_PRIMARY", ArticlesProcesses.ARTICLES_PROCESSES.ARTICLE_ID, ArticlesProcesses.ARTICLES_PROCESSES.PROCESS_ID);
         public static final UniqueKey<ArticlesTagsRecord> KEY_ARTICLES_TAGS_PRIMARY = Internal.createUniqueKey(ArticlesTags.ARTICLES_TAGS, "KEY_articles_tags_PRIMARY", ArticlesTags.ARTICLES_TAGS.ARTICLE_ID, ArticlesTags.ARTICLES_TAGS.TAG_ID);
         public static final UniqueKey<CommentsRecord> KEY_COMMENTS_PRIMARY = Internal.createUniqueKey(Comments.COMMENTS, "KEY_comments_PRIMARY", Comments.COMMENTS.ID);
         public static final UniqueKey<FlywaySchemaHistoryRecord> KEY_FLYWAY_SCHEMA_HISTORY_PRIMARY = Internal.createUniqueKey(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, "KEY_flyway_schema_history_PRIMARY", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK);
+        public static final UniqueKey<GroupsRecord> KEY_GROUPS_PRIMARY = Internal.createUniqueKey(Groups.GROUPS, "KEY_groups_PRIMARY", Groups.GROUPS.ID);
         public static final UniqueKey<LikesRecord> KEY_LIKES_PRIMARY = Internal.createUniqueKey(Likes.LIKES, "KEY_likes_PRIMARY", Likes.LIKES.ARTICLE_ID, Likes.LIKES.USER_ID);
+        public static final UniqueKey<ProcessesRecord> KEY_PROCESSES_PRIMARY = Internal.createUniqueKey(Processes.PROCESSES, "KEY_processes_PRIMARY", Processes.PROCESSES.ID);
         public static final UniqueKey<TagsRecord> KEY_TAGS_PRIMARY = Internal.createUniqueKey(Tags.TAGS, "KEY_tags_PRIMARY", Tags.TAGS.ID);
         public static final UniqueKey<UsersRecord> KEY_USERS_PRIMARY = Internal.createUniqueKey(Users.USERS, "KEY_users_PRIMARY", Users.USERS.ID);
     }
