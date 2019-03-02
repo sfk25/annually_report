@@ -7,10 +7,13 @@ package jp.co.sfk25.annually_report.jooq;
 import javax.annotation.Generated;
 
 import jp.co.sfk25.annually_report.jooq.tables.Articles;
+import jp.co.sfk25.annually_report.jooq.tables.ArticlesProcesses;
 import jp.co.sfk25.annually_report.jooq.tables.ArticlesTags;
 import jp.co.sfk25.annually_report.jooq.tables.Comments;
 import jp.co.sfk25.annually_report.jooq.tables.FlywaySchemaHistory;
+import jp.co.sfk25.annually_report.jooq.tables.Groups;
 import jp.co.sfk25.annually_report.jooq.tables.Likes;
+import jp.co.sfk25.annually_report.jooq.tables.Processes;
 import jp.co.sfk25.annually_report.jooq.tables.Tags;
 import jp.co.sfk25.annually_report.jooq.tables.Users;
 
@@ -34,6 +37,11 @@ public class Tables {
     public static final Articles ARTICLES = jp.co.sfk25.annually_report.jooq.tables.Articles.ARTICLES;
 
     /**
+     * The table <code>sfk25.articles_processes</code>.
+     */
+    public static final ArticlesProcesses ARTICLES_PROCESSES = jp.co.sfk25.annually_report.jooq.tables.ArticlesProcesses.ARTICLES_PROCESSES;
+
+    /**
      * The table <code>sfk25.articles_tags</code>.
      */
     public static final ArticlesTags ARTICLES_TAGS = jp.co.sfk25.annually_report.jooq.tables.ArticlesTags.ARTICLES_TAGS;
@@ -49,9 +57,19 @@ public class Tables {
     public static final FlywaySchemaHistory FLYWAY_SCHEMA_HISTORY = jp.co.sfk25.annually_report.jooq.tables.FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY;
 
     /**
+     * The table <code>sfk25.groups</code>.
+     */
+    public static final Groups GROUPS = jp.co.sfk25.annually_report.jooq.tables.Groups.GROUPS;
+
+    /**
      * The table <code>sfk25.likes</code>.
      */
     public static final Likes LIKES = jp.co.sfk25.annually_report.jooq.tables.Likes.LIKES;
+
+    /**
+     * The table <code>sfk25.processes</code>.
+     */
+    public static final Processes PROCESSES = jp.co.sfk25.annually_report.jooq.tables.Processes.PROCESSES;
 
     /**
      * The table <code>sfk25.tags</code>.
