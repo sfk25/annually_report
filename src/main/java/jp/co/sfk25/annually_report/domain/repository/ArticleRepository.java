@@ -1,16 +1,16 @@
 package jp.co.sfk25.annually_report.domain.repository;
 
-import jp.co.sfk25.annually_report.domain.entity.User;
 import jp.co.sfk25.annually_report.jooq.tables.Articles;
 import jp.co.sfk25.annually_report.jooq.tables.Users;
 import jp.co.sfk25.annually_report.jooq.tables.records.ArticlesRecord;
 import jp.co.sfk25.annually_report.domain.entity.Article;
-import jp.co.sfk25.annually_report.controller.Conds;
-import jp.co.sfk25.annually_report.jooq.tables.records.UsersRecord;
+import jp.co.sfk25.annually_report.form.ArticleConds;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.jooq.*;
 
 import static jp.co.sfk25.annually_report.jooq.tables.Articles.ARTICLES;
@@ -34,8 +34,8 @@ public class ArticleRepository {
     }
 
 
-
-    public List<Article> findByConds(Conds conds) {
+    // TODO 他のテーブルの情報も取得してえ
+    public List<Article> findByConds(ArticleConds articleConds) {
         Articles a = ARTICLES.as("a");
         // TODO group追加
         Users c = USERS.as("c");
@@ -44,37 +44,25 @@ public class ArticleRepository {
         // TODO processId追加
 
 
-        SelectQuery<ArticlesRecord> query = dslContext.selectFrom(a).getQuery();
+        SelectQuery<Record> query = dslContext.select(a.fields()).from(a).getQuery();
+//        SelectQuery<?> query = dslContext.select(a.ID, a.TITLE, a.USER_ID, a.VALUE, c.NAME).from(a).getQuery();
+//        query.addJoin(c, a.USER_ID.eq(c.ID));
+//        SelectQuery<Record> query = dslContext.select(Record2<"","">).from(a).getQuery();
+//        SelectQuery<ArticlesRecord> query = dslContext.selectFrom(a).getQuery();
 
         // title
-        if(!StringUtils.isEmpty(conds.getTitle())){
-            Condition condition = a.TITLE.like("%" + conds.getTitle() + "%");
+        if(!StringUtils.isEmpty(articleConds.getTitle())){
+            Condition condition = a.TITLE.like("%" + articleConds.getTitle() + "%");
             query.addConditions(Operator.AND, condition);
         }
 
         // groupId
 
         // userName
-        if(!StringUtils.isEmpty(conds.getUserName())) {
-//            query.addJoin(c, a.USER_ID.eq(c.ID));
-            Table<Record> g = a.join(c).on(c.ID.eq(a.USER_ID)).as("g");
-            Condition condition = g.field("user_id").eq(conds.getUserName());
+        if(!StringUtils.isEmpty(articleConds.getUserName())) {
+            Condition condition = c.NAME.eq(articleConds.getUserName());
             query.addConditions(Operator.AND, condition);
-
-//            Table<UsersRecord> subQuery =
-//                    dslContext.selectFrom(c).where(c.NAME.like("%" + conds.getUserName() + "%")).asTable("subQuery");
-
-//            System.out.println("=================================");
-////            System.out.println();
-//
-//            Condition condition = a.join(subQuery).on(a.USER_ID.equal(subQuery.field("id")));
-//            query.addConditions(Operator.AND, condition);
-
-//            query.addJoin(subQuery, c.ID.equal(a.USER_ID));
-//            query.addJoin(subQuery, subQuery.field("id").equal(a.USER_ID);
         }
-
-
 
         // targetYear
 
@@ -82,7 +70,18 @@ public class ArticleRepository {
 
         // processId
 
-        return query.fetch(this::toEntity);
+//        System.out.println(query.getSQL());
+//
+//
+//        Result<?> hoge = query.fetch();
+//
+//        System.out.println(hoge.getClass());
+//        System.out.println(hoge.toArray());
+
+//        return query.fetch(this::toEntity);
+        return query.fetchInto(ArticlesRecord.class).stream()
+                .map(this::toEntity)
+                .collect(Collectors.toList());
     }
 
 
@@ -92,6 +91,7 @@ public class ArticleRepository {
                 record.getUserId(),
                 record.getTitle(),
                 record.getValue(),
+                record.getCreatedYear(),
                 record.getCreatedAt().toLocalDateTime(),
                 record.getUpdatedAt().toLocalDateTime());
     }

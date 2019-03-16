@@ -22,13 +22,16 @@ public class Article {
   private final String value;
 
   @NonNull
+  private final Integer created_year;
+
+  @NonNull
   private final LocalDateTime created_at;
 
   @NonNull
   private final LocalDateTime updated_at;
 
-  public static Article create(Integer id, Integer userId, String title, String value) {
+  public static Article create(Integer id, Integer userId, String title, String value, int createdYear) {
     LocalDateTime now = LocalDateTime.now();
-    return Article.of(id, userId, title, value, now, now);
+    return Article.of(id, userId, title, value, createdYear, now, now);
   }
 }

@@ -19,13 +19,16 @@ public class User {
   private final String password;
 
   @NonNull
+  private final Integer group_id;
+
+  @NonNull
   private final LocalDateTime created_at;
 
   @NonNull
   private final LocalDateTime updated_at;
 
-  public static User create(String name, String password) {
+  public static User create(String name, String password, int groupId) {
     LocalDateTime now = LocalDateTime.now();
-    return User.of(null, name, password, now, now);
+    return User.of(null, name, password, groupId, now, now);
   }
 }
