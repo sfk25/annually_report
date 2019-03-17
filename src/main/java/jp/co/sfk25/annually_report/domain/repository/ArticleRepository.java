@@ -58,11 +58,11 @@ public class ArticleRepository {
         /**
          * 記事に紐づく技術の名前を結合したテーブル
          * .ex)
-         * +----+---------------------+
+         * +------------+-------------+
          * |  article_id|         tags|
-         * +----+---------------------+
+         * +------------+-------------+
          * |           1| Java,PHP,git|
-         * +----+---------------------+
+         * +------------+-------------+
          */
         Table f =  dslContext.select(d.ARTICLE_ID, DSL.field("GROUP_CONCAT(tags.value SEPARATOR ',')").as("tags")).from(d)
                 .join(TAGS).on(d.TAG_ID.eq(TAGS.ID))
@@ -71,11 +71,11 @@ public class ArticleRepository {
         /**
          * 記事に紐づく工程の名前を結合したテーブル
          * .ex)
-         * +----+------------------------+
+         * +------------+----------------+
          * |  article_id|       processes|
-         * +----+------------------------+
+         * +------------+----------------+
          * |           1| 要件定義,設計,実装|
-         * +----+------------------------+
+         * +------------+----------------+
          */
         Table g =  dslContext.select(e.ARTICLE_ID, DSL.field("GROUP_CONCAT(processes.value SEPARATOR ',')").as("processes")).from(e)
                 .join(PROCESSES).on(e.PROCESS_ID.eq(PROCESSES.ID))
