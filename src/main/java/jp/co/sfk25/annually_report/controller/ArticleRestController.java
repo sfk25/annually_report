@@ -1,5 +1,7 @@
 package jp.co.sfk25.annually_report.controller;
 
+import jp.co.sfk25.annually_report.controller.model.ArticleModel;
+import jp.co.sfk25.annually_report.controller.model.ArticleCondsModel;
 import jp.co.sfk25.annually_report.domain.entity.Article;
 import jp.co.sfk25.annually_report.domain.entity.Group;
 import jp.co.sfk25.annually_report.domain.entity.Process;
@@ -12,9 +14,7 @@ import jp.co.sfk25.annually_report.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,24 +32,18 @@ public class ArticleRestController {
     }
 
     @PostMapping(path = "search")
-    public List<Article> search(@RequestBody ArticleConds articleConds) {
+    public List<ArticleModel> search(@RequestBody ArticleConds articleConds) {
         return articleService.findByConds(articleConds);
     }
 
     @GetMapping(path = "getConds")
-    public Map<String, List> getConds() {
+    public ArticleCondsModel getConds() {
         List<Group> groups = groupService.getGroups();
         List<Process> processes = processService.getProcesses();
         List<Tag> tags = tagService.getTags();
         List<Integer> years = articleService.getYears();
 
-        Map<String, List> conds = new HashMap<>();
-        conds.put("groups", groups);
-        conds.put("processes", processes);
-        conds.put("tags", tags);
-        conds.put("years", years);
-
-        return conds;
+        return new ArticleCondsModel(groups, processes, tags, years);
     }
 
 

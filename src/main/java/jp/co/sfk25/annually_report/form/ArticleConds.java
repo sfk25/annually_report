@@ -6,10 +6,10 @@ import lombok.Data;
 public class ArticleConds {
 
     private String title;
-    private String groupId;
+    private int groupId;
     private String userName;
     private String targetYear;
     private String tag;
-    private String processId;
+    private int processId;
 
 }
