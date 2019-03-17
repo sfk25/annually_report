@@ -29,11 +29,11 @@ public class ArticleRepository {
 
     private final DSLContext dslContext;
 
-    private Articles a = ARTICLES.as("a");
-    private Users b = USERS.as("b");
-    private Groups c = GROUPS.as("c");
-    private ArticlesTags d = ARTICLES_TAGS.as("d");
-    private ArticlesProcesses e = ARTICLES_PROCESSES.as("e");
+    private Articles a = ARTICLES;
+    private Users u = USERS;
+    private Groups g = GROUPS;
+    private ArticlesTags at = ARTICLES_TAGS;
+    private ArticlesProcesses ap = ARTICLES_PROCESSES;
 
 
     public Article findOne(int id) {
@@ -76,10 +76,11 @@ public class ArticleRepository {
          * |           1| Java,PHP,git|
          * +------------+-------------+
          */
-        Table f =  dslContext.select(d.ARTICLE_ID, DSL.field("GROUP_CONCAT(tags.value SEPARATOR ',')").as("tags")).from(d)
-                .join(TAGS).on(d.TAG_ID.eq(TAGS.ID))
-                .groupBy(d.ARTICLE_ID)
-                .asTable("f");
+        Table atv = dslContext.select(at.ARTICLE_ID, DSL.field("GROUP_CONCAT(tags.value SEPARATOR ',')").as("tags"))
+                .from(at)
+                .join(TAGS).on(at.TAG_ID.eq(TAGS.ID))
+                .groupBy(at.ARTICLE_ID)
+                .asTable("articles_tags_value");
 
         /**
          * 記事に紐づく工程の名前を結合したテーブル
@@ -90,16 +91,17 @@ public class ArticleRepository {
          * |           1| 要件定義,設計,実装|
          * +------------+----------------+
          */
-        Table g =  dslContext.select(e.ARTICLE_ID, DSL.field("GROUP_CONCAT(processes.value SEPARATOR ',')").as("processes")).from(e)
-                .join(PROCESSES).on(e.PROCESS_ID.eq(PROCESSES.ID))
-                .groupBy(e.ARTICLE_ID)
-                .asTable("g");
+        Table apv = dslContext.select(ap.ARTICLE_ID, DSL.field("GROUP_CONCAT(processes.value SEPARATOR ',')").as("processes"))
+                .from(ap)
+                .join(PROCESSES).on(ap.PROCESS_ID.eq(PROCESSES.ID))
+                .groupBy(ap.ARTICLE_ID)
+                .asTable("articles_processes_value");
 
         return dslContext.select().from(a)
-                .join(b).on(a.USER_ID.eq(b.ID))
-                .join(c).on(b.GROUP_ID.eq(c.ID))
-                .leftJoin(f).on(a.ID.eq(f.field("article_id")))
-                .leftJoin(g).on(a.ID.eq(g.field("article_id")))
+                .join(u).on(a.USER_ID.eq(u.ID))
+                .join(g).on(u.GROUP_ID.eq(g.ID))
+                .leftJoin(atv).on(a.ID.eq(atv.field("article_id")))
+                .leftJoin(apv).on(a.ID.eq(apv.field("article_id")))
                 .getQuery();
     }
 
@@ -112,13 +114,13 @@ public class ArticleRepository {
 
         // グループID
         if(articleConds.getGroupId() > 0){
-            Condition condition = c.ID.eq(articleConds.getGroupId());
+            Condition condition = g.ID.eq(articleConds.getGroupId());
             query.addConditions(Operator.AND, condition);
         }
 
         // ユーザー名
         if(!StringUtils.isEmpty(articleConds.getUserName())){
-            Condition condition = b.NAME.like("%" + articleConds.getUserName() + "%");
+            Condition condition = u.NAME.like("%" + articleConds.getUserName() + "%");
             query.addConditions(Operator.AND, condition);
         }
 
@@ -130,8 +132,8 @@ public class ArticleRepository {
 
         // 使用した技術
         if(!StringUtils.isEmpty(articleConds.getTag())){
-            Table table =  dslContext.select().from(d)
-                    .join(TAGS).on(d.TAG_ID.eq(TAGS.ID))
+            Table table =  dslContext.select().from(at)
+                    .join(TAGS).on(at.TAG_ID.eq(TAGS.ID))
                     .where(TAGS.VALUE.eq(articleConds.getTag()))
                     .asTable();
 
@@ -140,8 +142,8 @@ public class ArticleRepository {
 
         // 担当した工程
         if(articleConds.getProcessId() > 0){
-            Table table =  dslContext.select().from(e)
-                    .where(e.PROCESS_ID.eq(articleConds.getProcessId()))
+            Table table =  dslContext.select().from(ap)
+                    .where(ap.PROCESS_ID.eq(articleConds.getProcessId()))
                     .asTable();
 
             query.addJoin(table, JoinType.RIGHT_OUTER_JOIN, table.field("article_id").eq(a.ID));

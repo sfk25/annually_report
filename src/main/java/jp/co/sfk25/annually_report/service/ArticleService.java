@@ -40,11 +40,6 @@ public class ArticleService {
     }
 
     private List<ArticleModel> convertToModel(Result<Record> result) {
-        // TODO Repository側とまとめたい
-        Articles a = ARTICLES.as("a");
-        Users b = USERS.as("b");
-        Groups c = GROUPS.as("c");
-
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
 
         List<ArticleModel> articles = new ArrayList<>();
@@ -53,14 +48,14 @@ public class ArticleService {
         result.stream().forEach(record -> {
             ArticleModel article = new ArticleModel();
 
-            article.setId(record.getValue(a.ID));
-            article.setTitle(record.getValue(a.TITLE));
-            article.setUserName(record.getValue(b.NAME));
-            article.setGroupName(record.getValue(c.VALUE));
+            article.setId(record.getValue(ARTICLES.ID));
+            article.setTitle(record.getValue(ARTICLES.TITLE));
+            article.setUserName(record.getValue(USERS.NAME));
+            article.setGroupName(record.getValue(GROUPS.VALUE));
 
             // 使用した技術
             List<String > tags = !StringUtils.isEmpty(record.getValue("tags"))
-                    ? Arrays.asList(record.getValue("tags").toString().split(",")):new ArrayList<>();
+                    ?Arrays.asList(record.getValue("tags").toString().split(",")):new ArrayList<>();
             article.setTags(tags);
 
             // 担当した工程
@@ -68,8 +63,8 @@ public class ArticleService {
                     ?Arrays.asList(record.getValue("processes").toString().split(",")):new ArrayList<>();
             article.setProcesses(processes);
 
-            article.setCreatedYear(record.getValue(a.CREATED_YEAR));
-            article.setCreatedAt(formatter.format(record.getValue(a.CREATED_AT).toLocalDateTime()));
+            article.setCreatedYear(record.getValue(ARTICLES.CREATED_YEAR));
+            article.setCreatedAt(formatter.format(record.getValue(ARTICLES.CREATED_AT).toLocalDateTime()));
 
             articles.add(article);
         });
@@ -83,13 +78,9 @@ public class ArticleService {
     public List<Integer> prepareYears(){
         List<Integer> years = new ArrayList<>();
 
-        LocalDateTime nowDate = LocalDateTime.now();
-        LocalDateTime date = nowDate.minusYears(10);
+        int year = LocalDateTime.now().minusYears(10).getYear();
 
-        int year = date.getYear();
-
-        for (int i=0; i<20; i++)
-            years.add(year++);
+        for (int i=0; i<20; i++) years.add(year++);
 
         return years;
     }
