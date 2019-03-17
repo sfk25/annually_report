@@ -8,12 +8,12 @@ import jp.co.sfk25.annually_report.jooq.tables.*;
 import org.jooq.*;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
+import org.springframework.util.StringUtils;
 
 import static jp.co.sfk25.annually_report.jooq.tables.Articles.ARTICLES;
 import static jp.co.sfk25.annually_report.jooq.tables.Groups.GROUPS;
 import static jp.co.sfk25.annually_report.jooq.tables.Users.USERS;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -30,8 +30,7 @@ public class ArticleService {
     }
 
     public List<ArticleModel> findByConds(ArticleConds articleConds){
-        Result<Record8<Integer, String, String, String, Object, Object, Integer, Timestamp>> result
-                = articleRepository.findByConds(articleConds);
+        Result<Record> result = articleRepository.findByConds(articleConds);
 
         // TODO Repository側とまとめたい
         Articles a = ARTICLES.as("a");
@@ -42,6 +41,7 @@ public class ArticleService {
 
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
 
+        // モデルに設定
         result.stream().forEach(record -> {
             ArticleModel article = new ArticleModel();
 
@@ -49,8 +49,17 @@ public class ArticleService {
             article.setTitle(record.getValue(a.TITLE));
             article.setUserName(record.getValue(b.NAME));
             article.setGroupName(record.getValue(c.VALUE));
-            article.setTags(Arrays.asList(record.getValue("tags").toString().split(",")));
-            article.setProcesses(Arrays.asList(record.getValue("processes").toString().split(",")));
+
+            // 使用した技術
+            List<String > tags = !StringUtils.isEmpty(record.getValue("tags"))
+                    ?Arrays.asList(record.getValue("tags").toString().split(",")):new ArrayList<>();
+            article.setTags(tags);
+
+            // 担当した工程
+            List<String > processes = !StringUtils.isEmpty(record.getValue("processes"))
+                    ?Arrays.asList(record.getValue("processes").toString().split(",")):new ArrayList<>();
+            article.setProcesses(processes);
+
             article.setCreatedYear(record.getValue(a.CREATED_YEAR));
             article.setCreatedAt(formatter.format(record.getValue(a.CREATED_AT).toLocalDateTime()));
 
@@ -60,7 +69,10 @@ public class ArticleService {
         return articles;
     }
 
-    public List<Integer> getYears(){
+    /**
+     * 現在の西暦から前後10年分の西暦のリストを作成
+     */
+    public List<Integer> prepareYears(){
         List<Integer> years = new ArrayList<>();
 
         LocalDateTime nowDate = LocalDateTime.now();

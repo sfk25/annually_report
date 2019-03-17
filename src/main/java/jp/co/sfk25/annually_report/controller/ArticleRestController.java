@@ -41,7 +41,7 @@ public class ArticleRestController {
         List<Group> groups = groupService.getGroups();
         List<Process> processes = processService.getProcesses();
         List<Tag> tags = tagService.getTags();
-        List<Integer> years = articleService.getYears();
+        List<Integer> years = articleService.prepareYears();
 
         return new ArticleCondsModel(groups, processes, tags, years);
     }

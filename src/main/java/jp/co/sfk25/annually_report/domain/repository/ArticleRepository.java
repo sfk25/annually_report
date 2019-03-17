@@ -4,15 +4,13 @@ import jp.co.sfk25.annually_report.jooq.tables.*;
 import jp.co.sfk25.annually_report.jooq.tables.records.ArticlesRecord;
 import jp.co.sfk25.annually_report.domain.entity.Article;
 import jp.co.sfk25.annually_report.form.ArticleConds;
-import org.jooq.impl.DSL;
-import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
-import lombok.RequiredArgsConstructor;
-
-import java.sql.Timestamp;
-import java.util.List;
 
 import org.jooq.*;
+import org.jooq.impl.DSL;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
+import java.util.List;
 
 import static jp.co.sfk25.annually_report.jooq.tables.Articles.ARTICLES;
 import static jp.co.sfk25.annually_report.jooq.tables.Groups.GROUPS;
@@ -50,7 +48,7 @@ public class ArticleRepository {
                 record.getUpdatedAt().toLocalDateTime());
     }
 
-    public Result<Record8<Integer, String, String, String, Object, Object, Integer, Timestamp>> findByConds(ArticleConds articleConds) {
+    public Result<Record> findByConds(ArticleConds articleConds) {
         Articles a = ARTICLES.as("a");
         Users b = USERS.as("b");
         Groups c = GROUPS.as("c");
@@ -85,14 +83,13 @@ public class ArticleRepository {
                 .asTable("g");
 
         // 結合
-        SelectQuery<Record8<Integer, String, String, String, Object, Object, Integer, Timestamp>> query =
-                dslContext.select(a.ID, a.TITLE, b.NAME, c.VALUE, DSL.field("tags"), DSL.field("processes"), a.CREATED_YEAR, a.CREATED_AT)
+        SelectQuery<Record> query =
+                dslContext.select()
                         .from(a)
                         .join(b).on(a.USER_ID.eq(b.ID))
                         .join(c).on(b.GROUP_ID.eq(c.ID))
-                        .join(f).on(a.ID.eq(f.field("article_id")))
-                        .join(g).on(a.ID.eq(g.field("article_id")))
-                        .groupBy(a.ID)
+                        .leftJoin(f).on(a.ID.eq(f.field("article_id")))
+                        .leftJoin(g).on(a.ID.eq(g.field("article_id")))
                         .getQuery();
 
         // タイトル
@@ -109,7 +106,13 @@ public class ArticleRepository {
 
         // ユーザー名
         if(!StringUtils.isEmpty(articleConds.getUserName())){
-            Condition condition = b.NAME.eq(articleConds.getUserName());
+            Condition condition = b.NAME.like("%" + articleConds.getUserName() + "%");
+            query.addConditions(Operator.AND, condition);
+        }
+
+        // 対象年度
+        if(!StringUtils.isEmpty(articleConds.getTargetYear())){
+            Condition condition = a.CREATED_YEAR.eq(Integer.parseInt(articleConds.getTargetYear()));
             query.addConditions(Operator.AND, condition);
         }
 
@@ -132,7 +135,6 @@ public class ArticleRepository {
             query.addJoin(table, JoinType.RIGHT_OUTER_JOIN, table.field("article_id").eq(a.ID));
         }
 
-        // 実行
         return query.fetch();
     }
 }
