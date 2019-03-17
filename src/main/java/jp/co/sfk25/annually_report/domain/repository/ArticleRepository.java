@@ -29,6 +29,13 @@ public class ArticleRepository {
 
     private final DSLContext dslContext;
 
+    private Articles a = ARTICLES.as("a");
+    private Users b = USERS.as("b");
+    private Groups c = GROUPS.as("c");
+    private ArticlesTags d = ARTICLES_TAGS.as("d");
+    private ArticlesProcesses e = ARTICLES_PROCESSES.as("e");
+
+
     public Article findOne(int id) {
         return dslContext.selectFrom(ARTICLES).where(ARTICLES.ID.eq(id)).fetchOne(this::toEntity);
     }
@@ -48,13 +55,18 @@ public class ArticleRepository {
                 record.getUpdatedAt().toLocalDateTime());
     }
 
-    public Result<Record> findByConds(ArticleConds articleConds) {
-        Articles a = ARTICLES.as("a");
-        Users b = USERS.as("b");
-        Groups c = GROUPS.as("c");
-        ArticlesTags d = ARTICLES_TAGS.as("d");
-        ArticlesProcesses e = ARTICLES_PROCESSES.as("e");
 
+    public Result<Record> findByConds(ArticleConds articleConds) {
+        // 結合
+        SelectQuery<Record> query = joinTable();
+
+        // 条件
+        addConds(query, articleConds);
+
+        return query.fetch();
+    }
+
+    private SelectQuery<Record> joinTable() {
         /**
          * 記事に紐づく技術の名前を結合したテーブル
          * .ex)
@@ -68,6 +80,7 @@ public class ArticleRepository {
                 .join(TAGS).on(d.TAG_ID.eq(TAGS.ID))
                 .groupBy(d.ARTICLE_ID)
                 .asTable("f");
+
         /**
          * 記事に紐づく工程の名前を結合したテーブル
          * .ex)
@@ -82,16 +95,15 @@ public class ArticleRepository {
                 .groupBy(e.ARTICLE_ID)
                 .asTable("g");
 
-        // 結合
-        SelectQuery<Record> query =
-                dslContext.select()
-                        .from(a)
-                        .join(b).on(a.USER_ID.eq(b.ID))
-                        .join(c).on(b.GROUP_ID.eq(c.ID))
-                        .leftJoin(f).on(a.ID.eq(f.field("article_id")))
-                        .leftJoin(g).on(a.ID.eq(g.field("article_id")))
-                        .getQuery();
+        return dslContext.select().from(a)
+                .join(b).on(a.USER_ID.eq(b.ID))
+                .join(c).on(b.GROUP_ID.eq(c.ID))
+                .leftJoin(f).on(a.ID.eq(f.field("article_id")))
+                .leftJoin(g).on(a.ID.eq(g.field("article_id")))
+                .getQuery();
+    }
 
+    private void addConds(SelectQuery<Record> query, ArticleConds articleConds) {
         // タイトル
         if(!StringUtils.isEmpty(articleConds.getTitle())){
             Condition condition = a.TITLE.like("%" + articleConds.getTitle() + "%");
@@ -134,7 +146,5 @@ public class ArticleRepository {
 
             query.addJoin(table, JoinType.RIGHT_OUTER_JOIN, table.field("article_id").eq(a.ID));
         }
-
-        return query.fetch();
     }
 }

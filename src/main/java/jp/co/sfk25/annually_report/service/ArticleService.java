@@ -30,16 +30,24 @@ public class ArticleService {
     }
 
     public List<ArticleModel> findByConds(ArticleConds articleConds){
+        // 取得
         Result<Record> result = articleRepository.findByConds(articleConds);
 
+        // 変換
+        List<ArticleModel> articles = convertToModel(result);
+
+        return articles;
+    }
+
+    private List<ArticleModel> convertToModel(Result<Record> result) {
         // TODO Repository側とまとめたい
         Articles a = ARTICLES.as("a");
         Users b = USERS.as("b");
         Groups c = GROUPS.as("c");
 
-        List<ArticleModel> articles = new ArrayList<>();
-
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+
+        List<ArticleModel> articles = new ArrayList<>();
 
         // モデルに設定
         result.stream().forEach(record -> {
@@ -52,7 +60,7 @@ public class ArticleService {
 
             // 使用した技術
             List<String > tags = !StringUtils.isEmpty(record.getValue("tags"))
-                    ?Arrays.asList(record.getValue("tags").toString().split(",")):new ArrayList<>();
+                    ? Arrays.asList(record.getValue("tags").toString().split(",")):new ArrayList<>();
             article.setTags(tags);
 
             // 担当した工程
@@ -70,7 +78,7 @@ public class ArticleService {
     }
 
     /**
-     * 現在の西暦から前後10年分の西暦のリストを作成
+     * 現在の西暦から前後それぞれ10年分の西暦のリストを作成
      */
     public List<Integer> prepareYears(){
         List<Integer> years = new ArrayList<>();
