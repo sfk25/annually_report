@@ -45,7 +45,7 @@ public class ArticleService {
         List<ArticleModel> articles = new ArrayList<>();
 
         // モデルに設定
-        result.stream().forEach(record -> {
+        result.forEach(record -> {
             ArticleModel article = new ArticleModel();
 
             article.setId(record.getValue(ARTICLES.ID));
@@ -54,13 +54,15 @@ public class ArticleService {
             article.setGroupName(record.getValue(GROUPS.VALUE));
 
             // 使用した技術
-            List<String > tags = !StringUtils.isEmpty(record.getValue("tags"))
-                    ?Arrays.asList(record.getValue("tags").toString().split(",")):new ArrayList<>();
+            List<String> tags = !StringUtils.isEmpty(record.getValue("tags"))
+                    ? Arrays.asList(record.getValue("tags").toString().split(","))
+                    : new ArrayList<>();
             article.setTags(tags);
 
             // 担当した工程
-            List<String > processes = !StringUtils.isEmpty(record.getValue("processes"))
-                    ?Arrays.asList(record.getValue("processes").toString().split(",")):new ArrayList<>();
+            List<String> processes = !StringUtils.isEmpty(record.getValue("processes"))
+                    ? Arrays.asList(record.getValue("processes").toString().split(","))
+                    : new ArrayList<>();
             article.setProcesses(processes);
 
             article.setCreatedYear(record.getValue(ARTICLES.CREATED_YEAR));

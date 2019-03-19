@@ -108,7 +108,7 @@ public class ArticleRepository {
     private void addConds(SelectQuery<Record> query, ArticleConds articleConds) {
         // タイトル
         if(!StringUtils.isEmpty(articleConds.getTitle())){
-            Condition condition = a.TITLE.like("%" + articleConds.getTitle() + "%");
+            Condition condition = a.TITLE.contains(articleConds.getTitle());
             query.addConditions(Operator.AND, condition);
         }
 
@@ -120,7 +120,7 @@ public class ArticleRepository {
 
         // ユーザー名
         if(!StringUtils.isEmpty(articleConds.getUserName())){
-            Condition condition = u.NAME.like("%" + articleConds.getUserName() + "%");
+            Condition condition = u.NAME.contains(articleConds.getUserName());
             query.addConditions(Operator.AND, condition);
         }
 
@@ -137,7 +137,7 @@ public class ArticleRepository {
                     .where(TAGS.VALUE.eq(articleConds.getTag()))
                     .asTable();
 
-            query.addJoin(table, JoinType.RIGHT_OUTER_JOIN, table.field("article_id").eq(a.ID));
+            query.addJoin(table, JoinType.JOIN, table.field("article_id").eq(a.ID));
         }
 
         // 担当した工程
@@ -146,7 +146,7 @@ public class ArticleRepository {
                     .where(ap.PROCESS_ID.eq(articleConds.getProcessId()))
                     .asTable();
 
-            query.addJoin(table, JoinType.RIGHT_OUTER_JOIN, table.field("article_id").eq(a.ID));
+            query.addJoin(table, JoinType.JOIN, table.field("article_id").eq(a.ID));
         }
     }
 }
