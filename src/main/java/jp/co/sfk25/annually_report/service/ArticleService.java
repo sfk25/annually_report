@@ -4,7 +4,6 @@ import jp.co.sfk25.annually_report.controller.model.ArticleModel;
 import jp.co.sfk25.annually_report.domain.repository.ArticleRepository;
 import jp.co.sfk25.annually_report.domain.entity.Article;
 import jp.co.sfk25.annually_report.form.ArticleConds;
-import jp.co.sfk25.annually_report.jooq.tables.*;
 import org.jooq.*;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
@@ -34,9 +33,7 @@ public class ArticleService {
         Result<Record> result = articleRepository.findByConds(articleConds);
 
         // 変換
-        List<ArticleModel> articles = convertToModel(result);
-
-        return articles;
+        return convertToModel(result);
     }
 
     private List<ArticleModel> convertToModel(Result<Record> result) {
