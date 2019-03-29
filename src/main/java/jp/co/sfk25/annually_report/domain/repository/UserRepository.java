@@ -33,6 +33,7 @@ public class UserRepository {
                 record.getName(),
                 // TODO パスワード復号化処理
                 record.getPassword(),
+                record.getGroupId(),
                 record.getCreatedAt().toLocalDateTime(),
                 record.getUpdatedAt().toLocalDateTime());
     }
