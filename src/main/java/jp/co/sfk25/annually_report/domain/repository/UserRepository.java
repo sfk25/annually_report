@@ -31,6 +31,7 @@ public class UserRepository {
         return User.of(
                 record.getId(),
                 record.getName(),
+                record.getEmail(),
                 // TODO パスワード復号化処理
                 record.getPassword(),
                 record.getGroupId(),
