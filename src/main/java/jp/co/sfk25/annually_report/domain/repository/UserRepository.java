@@ -27,6 +27,14 @@ public class UserRepository {
         return dslContext.selectFrom(USERS).fetch(this::toEntity);
     }
 
+    public User findByUserName(String userName) {
+        return dslContext.selectFrom(USERS).where(USERS.NAME.eq(userName)).fetchOne(this::toEntity);
+    }
+
+    public User findByEmail(String email) {
+        return dslContext.selectFrom(USERS).where(USERS.EMAIL.eq(email)).fetchOne(this::toEntity);
+    }
+
     private User toEntity(UsersRecord record) {
         return User.of(
                 record.getId(),
