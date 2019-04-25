@@ -62,16 +62,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/api/v1/login")
+                .antMatchers("/api/v1/auth/login", "/api/v1/auth/logout")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .cors().configurationSource(this.corsConfigurationSource())
-                .and().csrf().ignoringAntMatchers("/api/v1/login").csrfTokenRepository(csrfTokenRepository())
+                .and().csrf().ignoringAntMatchers("/api/v1/auth/login", "/api/v1/auth/logout").csrfTokenRepository(csrfTokenRepository())
                 .and().addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);
-
-        // TODO ログアウトの処理を追加
     }
 
     /**
