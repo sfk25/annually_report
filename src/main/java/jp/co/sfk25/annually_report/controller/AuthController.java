@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/auth")
-public class LoginController {
+public class AuthController {
 
     @Autowired
     LoginService loginService;

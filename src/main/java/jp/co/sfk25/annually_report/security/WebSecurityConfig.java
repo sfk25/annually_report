@@ -129,7 +129,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     *
      * @param userDetailsService
      */
     @Autowired
@@ -138,7 +137,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     *
      * @param auth
      * @throws Exception
      */
