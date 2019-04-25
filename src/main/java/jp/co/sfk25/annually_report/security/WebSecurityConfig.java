@@ -55,7 +55,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * 認可の設定
-     * ログイン/ログアウトの設定
      * @param http
      * @throws Exception
      */
@@ -119,6 +118,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         corsConfiguration.addAllowedMethod(CorsConfiguration.ALL);
         corsConfiguration.addAllowedHeader(CorsConfiguration.ALL);
         corsConfiguration.addExposedHeader("Authorization");
+        // TODO リリース時には削除?
         corsConfiguration.addAllowedOrigin("http://localhost:8080");
         corsConfiguration.setAllowCredentials(true);
 

@@ -9,8 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
- * UserDetailsServiceの実装クラス
- * Spring Securityでのユーザー認証に使用する
+ * Spring Securityでのユーザー認証に使用
  */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -18,8 +17,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     UserRepository userRepository;
 
-    /* (非 Javadoc)
-     * @see org.springframework.security.core.userdetails.UserDetailsService#loadUserByUsername(java.lang.String)
+    /**
+     * メールアドレスから認証
+     * @param email
+     * @return
+     * @throws UsernameNotFoundException
      */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
