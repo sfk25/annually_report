@@ -1,6 +1,6 @@
 package jp.co.sfk25.annually_report.service;
 
-import jp.co.sfk25.annually_report.controller.model.AuthResult;
+import jp.co.sfk25.annually_report.controller.model.AuthModel;
 import jp.co.sfk25.annually_report.domain.entity.User;
 import jp.co.sfk25.annually_report.form.LoginInfo;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +24,9 @@ public class LoginService {
      * @param loginInfo
      * @return
      */
-    public AuthResult login(LoginInfo loginInfo){
+    public AuthModel login(LoginInfo loginInfo){
         Authentication authentication = null;
-        AuthResult authResult = new AuthResult();
+        AuthModel authResult = new AuthModel();
 
         try {
             // 照合実施

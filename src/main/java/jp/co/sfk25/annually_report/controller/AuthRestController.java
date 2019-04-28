@@ -1,6 +1,6 @@
 package jp.co.sfk25.annually_report.controller;
 
-import jp.co.sfk25.annually_report.controller.model.AuthResult;
+import jp.co.sfk25.annually_report.controller.model.AuthModel;
 import jp.co.sfk25.annually_report.form.LoginInfo;
 import jp.co.sfk25.annually_report.service.LoginService;
 import jp.co.sfk25.annually_report.util.CsrfUtil;
@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/auth")
-public class AuthController {
+public class AuthRestController {
 
     @Autowired
     LoginService loginService;
@@ -36,11 +36,11 @@ public class AuthController {
      * @return
      */
     @PostMapping(value = "/login")
-    public ResponseEntity<AuthResult> login(
+    public ResponseEntity<AuthModel> login(
             @RequestBody LoginInfo loginInfo, HttpServletRequest request, HttpServletResponse response) {
 
         // 認証処理を実行
-        AuthResult authResult = loginService.login(loginInfo);
+        AuthModel authResult = loginService.login(loginInfo);
 
         if (authResult.getName() == null) {
             // 認証失敗
