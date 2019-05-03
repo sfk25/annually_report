@@ -3,12 +3,15 @@ package jp.co.sfk25.annually_report.domain.entity;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.springframework.lang.NonNull;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 
 @Value
 @RequiredArgsConstructor(staticName = "of")
-public class User {
+public class User implements UserDetails {
 
   private final Integer id;
 
@@ -29,6 +32,36 @@ public class User {
 
   @NonNull
   private final LocalDateTime updated_at;
+
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return null;
+  }
+
+  @Override
+  public String getUsername() {
+    return this.name;
+  }
+
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
+
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return true;
+  }
 
   public static User create(String name, String email, String password, int groupId) {
     LocalDateTime now = LocalDateTime.now();
