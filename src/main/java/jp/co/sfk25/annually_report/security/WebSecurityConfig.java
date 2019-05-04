@@ -60,13 +60,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/api/v1/auth/login", "/api/v1/auth/logout")
+                .antMatchers(
+                        "/api/v1/auth/login",
+                        "/api/v1/auth/logout",
+                        "/api/v1/group",
+                        "/api/v1/user/register")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
-                .and()
-                .cors().configurationSource(this.corsConfigurationSource())
-                .and().csrf().ignoringAntMatchers("/api/v1/auth/login", "/api/v1/auth/logout").csrfTokenRepository(csrfTokenRepository())
+                .and().cors()
+                .configurationSource(this.corsConfigurationSource())
+                .and().csrf()
+                .ignoringAntMatchers(
+                        "/api/v1/auth/login",
+                        "/api/v1/auth/logout",
+                        "/api/v1/group",
+                        "/api/v1/user/register")
+                .csrfTokenRepository(csrfTokenRepository())
                 .and().addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);
     }
 
