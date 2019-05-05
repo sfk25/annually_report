@@ -40,7 +40,7 @@ public class UserRepository {
     }
 
     public void insert(UserModel userModel) {
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
 
         dslContext.insertInto(USERS, USERS.NAME, USERS.EMAIL, USERS.PASSWORD, USERS.GROUP_ID, USERS.CREATED_AT, USERS.UPDATED_AT)
                 .values(userModel.getName(), userModel.getEmail(), userModel.getPassword(), userModel.getGroupId(), timestamp, timestamp)
