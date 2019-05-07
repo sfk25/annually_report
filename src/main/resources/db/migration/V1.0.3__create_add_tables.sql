@@ -1,4 +1,4 @@
-CREATE TABLE groups (
+CREATE TABLE `groups` (
   id    INT PRIMARY KEY AUTO_INCREMENT,
   value VARCHAR(20) NOT NULL
 );
