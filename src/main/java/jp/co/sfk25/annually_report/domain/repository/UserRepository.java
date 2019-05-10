@@ -1,11 +1,15 @@
 package jp.co.sfk25.annually_report.domain.repository;
 
+import jp.co.sfk25.annually_report.controller.model.UserModel;
 import jp.co.sfk25.annually_report.domain.entity.User;
 import jp.co.sfk25.annually_report.jooq.tables.records.UsersRecord;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static jp.co.sfk25.annually_report.jooq.tables.Users.USERS;
@@ -33,6 +37,14 @@ public class UserRepository {
 
     public User findByEmail(String email) {
         return dslContext.selectFrom(USERS).where(USERS.EMAIL.eq(email)).fetchOne(this::toEntity);
+    }
+
+    public void insert(UserModel userModel) {
+        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
+
+        dslContext.insertInto(USERS, USERS.NAME, USERS.EMAIL, USERS.PASSWORD, USERS.GROUP_ID, USERS.CREATED_AT, USERS.UPDATED_AT)
+                .values(userModel.getName(), userModel.getEmail(), userModel.getPassword(), userModel.getGroupId(), timestamp, timestamp)
+                .execute();
     }
 
     private User toEntity(UsersRecord record) {
