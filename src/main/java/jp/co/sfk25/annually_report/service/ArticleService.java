@@ -1,7 +1,9 @@
 package jp.co.sfk25.annually_report.service;
 
 import jp.co.sfk25.annually_report.controller.model.ArticleModel;
-import jp.co.sfk25.annually_report.domain.repository.ArticleRepository;
+import jp.co.sfk25.annually_report.controller.model.ArticleRegisterModel;
+import jp.co.sfk25.annually_report.domain.entity.Tag;
+import jp.co.sfk25.annually_report.domain.repository.*;
 import jp.co.sfk25.annually_report.domain.entity.Article;
 import jp.co.sfk25.annually_report.form.ArticleConds;
 import org.jooq.*;
@@ -23,6 +25,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ArticleService {
     private final ArticleRepository articleRepository;
+    private final ArticleTagRepository articleTagRepository;
+    private final ArticleProcessRepository articleProcessRepository;
+    private final TagRepository tagRepository;
 
     public List<Article> getArticles() {
         return articleRepository.findAll();
@@ -82,6 +87,23 @@ public class ArticleService {
         for (int i=0; i<20; i++) years.add(year++);
 
         return years;
+    }
+
+    public void register(ArticleRegisterModel articleRegisterModel) {
+        // 記事登録
+        Integer articleId = articleRepository.insert(articleRegisterModel);
+
+        // タグIDを取得。存在しないタグ名はタグを登録し、登録したタグIDを取得する。
+        String tagValue = articleRegisterModel.getTag();
+        Tag tag = tagRepository.findByValue(tagValue);
+        Integer tagId = tag != null ? tag.getId() : tagRepository.insert(tagValue);
+
+        // タグ登録
+        articleTagRepository.insert(articleId, tagId);
+
+        // 工程登録
+        Integer processId = articleRegisterModel.getProcessId();
+        articleProcessRepository.insert(articleId, processId);
     }
 
 }

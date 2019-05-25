@@ -22,6 +22,10 @@ public class TagRepository {
         return dslContext.selectFrom(TAGS).where(TAGS.ID.eq(id)).fetchOne(this::toEntity);
     }
 
+    public Tag findByValue(String value) {
+        return dslContext.selectFrom(TAGS).where(TAGS.VALUE.eq(value)).fetchOne(this::toEntity);
+    }
+
     public List<Tag> findAll() {
         return dslContext.selectFrom(TAGS).fetch(this::toEntity);
     }
@@ -30,5 +34,13 @@ public class TagRepository {
         return Tag.of(
                 record.getId(),
                 record.getValue());
+    }
+
+    public Integer insert(String value) {
+        dslContext.insertInto(TAGS, TAGS.VALUE)
+            .values(value)
+            .execute();
+
+        return dslContext.lastID().intValue();
     }
 }
