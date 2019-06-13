@@ -116,7 +116,7 @@ public class ArticleService {
     }
 
     /**
-     * 登録のためにのモデル生成
+     * 登録のためのモデル生成
      */
     private ArticleRegisterModel prepareArticleRegisterModel(ArticleRegister articleRegister, User user) {
         ArticleRegisterModel articleRegisterModel = new ArticleRegisterModel();
