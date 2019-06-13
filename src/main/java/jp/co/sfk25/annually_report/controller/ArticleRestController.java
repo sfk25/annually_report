@@ -2,7 +2,6 @@ package jp.co.sfk25.annually_report.controller;
 
 import jp.co.sfk25.annually_report.controller.model.ArticleModel;
 import jp.co.sfk25.annually_report.controller.model.ArticleCondsModel;
-import jp.co.sfk25.annually_report.controller.model.ArticleRegisterModel;
 import jp.co.sfk25.annually_report.domain.entity.*;
 import jp.co.sfk25.annually_report.domain.entity.Process;
 import jp.co.sfk25.annually_report.form.ArticleConds;
@@ -17,8 +16,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -60,32 +57,7 @@ public class ArticleRestController {
             throw new Exception("入力した値を確認してください");
         }
 
-        // モデルクラス生成
-        ArticleRegisterModel articleRegisterModel = prepareArticleRegisterModel(articleRegister, user);
-
-        // 登録
-        articleService.register(articleRegisterModel);
-    }
-
-    // TODO 定義場所
-    private ArticleRegisterModel prepareArticleRegisterModel(ArticleRegister articleRegister, User user) {
-        ArticleRegisterModel articleRegisterModel = new ArticleRegisterModel();
-
-        articleRegisterModel.setUserId(user.getId());
-
-        articleRegisterModel.setTitle(articleRegister.getTitle());
-        articleRegisterModel.setValue(articleRegister.getContent());
-
-        articleRegisterModel.setCreatedYear(Integer.parseInt(articleRegister.getTargetYear()));
-
-        articleRegisterModel.setTag(articleRegister.getTag());
-        articleRegisterModel.setProcessId(articleRegister.getProcessId());
-
-        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
-        articleRegisterModel.setCreatedAt(timestamp);
-        articleRegisterModel.setUpdatedAt(timestamp);
-
-        return articleRegisterModel;
+        articleService.register(articleRegister, user);
     }
 
 }

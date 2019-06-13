@@ -3,9 +3,11 @@ package jp.co.sfk25.annually_report.service;
 import jp.co.sfk25.annually_report.controller.model.ArticleModel;
 import jp.co.sfk25.annually_report.controller.model.ArticleRegisterModel;
 import jp.co.sfk25.annually_report.domain.entity.Tag;
+import jp.co.sfk25.annually_report.domain.entity.User;
 import jp.co.sfk25.annually_report.domain.repository.*;
 import jp.co.sfk25.annually_report.domain.entity.Article;
 import jp.co.sfk25.annually_report.form.ArticleConds;
+import jp.co.sfk25.annually_report.form.ArticleRegister;
 import org.jooq.*;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import static jp.co.sfk25.annually_report.jooq.tables.Articles.ARTICLES;
 import static jp.co.sfk25.annually_report.jooq.tables.Groups.GROUPS;
 import static jp.co.sfk25.annually_report.jooq.tables.Users.USERS;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -89,14 +92,20 @@ public class ArticleService {
         return years;
     }
 
-    public void register(ArticleRegisterModel articleRegisterModel) {
+
+    public void register(ArticleRegister articleRegister, User user) {
+        // モデル生成
+        ArticleRegisterModel articleRegisterModel = prepareArticleRegisterModel(articleRegister, user);
+
         // 記事登録
         Integer articleId = articleRepository.insert(articleRegisterModel);
 
         // タグIDを取得。存在しないタグ名はタグを登録し、登録したタグIDを取得する。
         String tagValue = articleRegisterModel.getTag();
         Tag tag = tagRepository.findByValue(tagValue);
-        Integer tagId = tag != null ? tag.getId() : tagRepository.insert(tagValue);
+        Integer tagId = tag != null
+                ? tag.getId()
+                : tagRepository.insert(tagValue);
 
         // タグ登録
         articleTagRepository.insert(articleId, tagId);
@@ -104,6 +113,29 @@ public class ArticleService {
         // 工程登録
         Integer processId = articleRegisterModel.getProcessId();
         articleProcessRepository.insert(articleId, processId);
+    }
+
+    /**
+     * 登録のためにのモデル生成
+     */
+    private ArticleRegisterModel prepareArticleRegisterModel(ArticleRegister articleRegister, User user) {
+        ArticleRegisterModel articleRegisterModel = new ArticleRegisterModel();
+
+        articleRegisterModel.setUserId(user.getId());
+
+        articleRegisterModel.setTitle(articleRegister.getTitle());
+        articleRegisterModel.setValue(articleRegister.getContent());
+
+        articleRegisterModel.setCreatedYear(Integer.parseInt(articleRegister.getTargetYear()));
+
+        articleRegisterModel.setTag(articleRegister.getTag());
+        articleRegisterModel.setProcessId(articleRegister.getProcessId());
+
+        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
+        articleRegisterModel.setCreatedAt(timestamp);
+        articleRegisterModel.setUpdatedAt(timestamp);
+
+        return articleRegisterModel;
     }
 
 }

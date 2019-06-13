@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
-import java.math.BigInteger;
 import java.util.List;
 
 import static jp.co.sfk25.annually_report.jooq.tables.Articles.ARTICLES;
