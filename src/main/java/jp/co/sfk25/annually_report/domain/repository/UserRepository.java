@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static jp.co.sfk25.annually_report.jooq.tables.Users.USERS;
@@ -42,8 +41,20 @@ public class UserRepository {
     public void insert(UserModel userModel) {
         Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
 
-        dslContext.insertInto(USERS, USERS.NAME, USERS.EMAIL, USERS.PASSWORD, USERS.GROUP_ID, USERS.CREATED_AT, USERS.UPDATED_AT)
-                .values(userModel.getName(), userModel.getEmail(), userModel.getPassword(), userModel.getGroupId(), timestamp, timestamp)
+        Timestamp enteringCompanyDate = userModel.getEnteringCompanyDate() != null
+                ? Timestamp.valueOf(userModel.getEnteringCompanyDate())
+                : null;
+
+        Timestamp birthday = userModel.getBirthday() != null
+                ? Timestamp.valueOf(userModel.getBirthday())
+                : null;
+
+        dslContext.insertInto(USERS, USERS.NAME, USERS.EMAIL, USERS.PASSWORD, USERS.GROUP_ID,
+                USERS.ENTERING_COMPANY_DATE, USERS.SEX, USERS.BLOOD_TYPE, USERS.BIRTHDAY,
+                USERS.SELF_INTRODUCTION, USERS.CREATED_AT, USERS.UPDATED_AT)
+                .values(userModel.getName(), userModel.getEmail(), userModel.getPassword(), userModel.getGroupId(),
+                        enteringCompanyDate, userModel.getSex(), userModel.getBloodType(), birthday,
+                        userModel.getSelfIntroduction(), timestamp, timestamp)
                 .execute();
     }
 
@@ -55,6 +66,15 @@ public class UserRepository {
                 // TODO パスワード復号化処理
                 record.getPassword(),
                 record.getGroupId(),
+                record.getEnteringCompanyDate() != null
+                        ? record.getEnteringCompanyDate().toLocalDateTime()
+                        : null,
+                record.getSex(),
+                record.getBloodType(),
+                record.getBirthday() != null
+                        ? record.getBirthday().toLocalDateTime()
+                        : null,
+                record.getSelfIntroduction(),
                 record.getCreatedAt().toLocalDateTime(),
                 record.getUpdatedAt().toLocalDateTime());
     }

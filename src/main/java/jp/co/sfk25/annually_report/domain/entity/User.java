@@ -27,6 +27,16 @@ public class User implements UserDetails {
   @NonNull
   private final Integer group_id;
 
+  private final LocalDateTime entering_companyDate;
+
+  private final Integer sex;
+
+  private final Integer bloodType;
+
+  private final LocalDateTime birthday;
+
+  private final String selfIntroduction;
+
   @NonNull
   private final LocalDateTime created_at;
 
@@ -63,8 +73,12 @@ public class User implements UserDetails {
     return true;
   }
 
-  public static User create(String name, String email, String password, int groupId) {
+  public static User create(String name, String email, String password, int groupId,
+                            LocalDateTime entering_companyDate, Integer sex, Integer bloodType,
+                            LocalDateTime birthday, String selfIntroduction) {
     LocalDateTime now = LocalDateTime.now();
-    return User.of(null, name, email, password, groupId, now, now);
+    return User.of(null, name, email, password, groupId,
+            entering_companyDate, sex, bloodType,
+            birthday, selfIntroduction, now, now);
   }
 }
