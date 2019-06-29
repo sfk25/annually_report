@@ -23,6 +23,11 @@ public class UserRestController {
         return userService.getUsers();
     }
 
+    @GetMapping(path = "/detail/{id}")
+    public UserModel get(@PathVariable("id") int id) {
+        return userService.getUser(id);
+    }
+
     @PostMapping(path = "/register")
     public boolean register(@RequestBody @Validated UserRegister userRegister, BindingResult bindingResult) throws Exception {
 

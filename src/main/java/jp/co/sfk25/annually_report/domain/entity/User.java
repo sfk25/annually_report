@@ -25,9 +25,9 @@ public class User implements UserDetails {
   private final String password;
 
   @NonNull
-  private final Integer group_id;
+  private final Integer groupId;
 
-  private final LocalDateTime entering_companyDate;
+  private final LocalDateTime enteringCompanyDate;
 
   private final Integer sex;
 
@@ -38,10 +38,10 @@ public class User implements UserDetails {
   private final String selfIntroduction;
 
   @NonNull
-  private final LocalDateTime created_at;
+  private final LocalDateTime createdAt;
 
   @NonNull
-  private final LocalDateTime updated_at;
+  private final LocalDateTime updatedAt;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

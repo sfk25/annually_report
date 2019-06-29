@@ -11,6 +11,7 @@ public class UserModel {
     private String email;
     private String password;
     private Integer groupId;
+    private String groupName;
     private LocalDateTime enteringCompanyDate;
     private Integer sex;
     private Integer bloodType;

@@ -12,6 +12,10 @@ import java.util.List;
 public class GroupService {
     private final GroupRepository groupRepository;
 
+    public Group getGroup(int id) {
+        return groupRepository.findOne(id);
+    }
+
     public List<Group> getGroups() {
         return groupRepository.findAll();
     }

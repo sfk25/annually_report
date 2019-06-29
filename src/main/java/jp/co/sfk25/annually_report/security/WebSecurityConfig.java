@@ -74,7 +74,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .ignoringAntMatchers(
                         "/api/v1/auth/login",
                         "/api/v1/auth/logout",
-                        "/api/v1/group",
                         "/api/v1/user/register")
                 .csrfTokenRepository(csrfTokenRepository())
                 .and().addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);
