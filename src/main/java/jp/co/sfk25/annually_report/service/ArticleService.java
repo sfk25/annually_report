@@ -102,14 +102,14 @@ public class ArticleService {
                         articleRegister.getTag(), articleRegister.getProcessId(), timestamp, timestamp);
 
         // 記事登録
-        Integer articleId = articleRepository.insert(articleRegisterModel).get(0).getId();
+        Integer articleId = articleRepository.insert(articleRegisterModel).getId();
 
         // タグIDを取得。存在しないタグ名はタグを登録し、登録したタグIDを取得する。
         String tagValue = articleRegisterModel.getTag();
         Tag tag = tagRepository.findByValue(tagValue);
         Integer tagId = tag != null
                 ? tag.getId()
-                : tagRepository.insert(tagValue).get(0).getId();
+                : tagRepository.insert(tagValue).getId();
 
         // タグ登録
         articleTagRepository.insert(articleId, tagId);

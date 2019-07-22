@@ -2,7 +2,6 @@ package jp.co.sfk25.annually_report.domain.repository;
 
 import jp.co.sfk25.annually_report.jooq.tables.records.TagsRecord;
 import jp.co.sfk25.annually_report.domain.entity.Tag;
-import org.jooq.Result;
 import org.springframework.stereotype.Repository;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
@@ -37,10 +36,10 @@ public class TagRepository {
                 record.getValue());
     }
 
-    public Result<TagsRecord> insert(String value) {
+    public TagsRecord insert(String value) {
         return dslContext.insertInto(TAGS, TAGS.VALUE)
             .values(value)
             .returning()
-            .fetch();
+            .fetchOne();
     }
 }
