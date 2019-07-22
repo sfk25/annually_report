@@ -35,6 +35,7 @@ public class UserRestController {
         UserModel userModel = new UserModel();
         BeanUtils.copyProperties(userRegister, userModel);
 
+        // TODO Formクラス内のアノテーションでチェックするよう修正
         if (!userService.canRegister(userModel.getName(), userModel.getEmail())) {
             throw new Exception("名前かメールアドレスが既に登録されています");
         }

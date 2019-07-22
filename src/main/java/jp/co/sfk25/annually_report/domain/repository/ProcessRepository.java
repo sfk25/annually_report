@@ -23,6 +23,10 @@ public class ProcessRepository {
         return dslContext.selectFrom(PROCESSES).where(PROCESSES.ID.eq(id)).fetchOne(this::toEntity);
     }
 
+    public Process findByValue(String value) {
+        return dslContext.selectFrom(PROCESSES).where(PROCESSES.VALUE.eq(value)).fetchOne(this::toEntity);
+    }
+
     public List<Process> findAll() {
         return dslContext.selectFrom(PROCESSES).fetch(this::toEntity);
     }
@@ -31,5 +35,11 @@ public class ProcessRepository {
         return Process.of(
                 record.getId(),
                 record.getValue());
+    }
+
+    public Integer insert(String value) {
+        return dslContext.insertInto(PROCESSES, PROCESSES.VALUE)
+                .values(value)
+                .execute();
     }
 }

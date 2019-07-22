@@ -2,16 +2,18 @@ package jp.co.sfk25.annually_report.controller;
 
 import jp.co.sfk25.annually_report.controller.model.ArticleModel;
 import jp.co.sfk25.annually_report.controller.model.ArticleCondsModel;
-import jp.co.sfk25.annually_report.domain.entity.Article;
-import jp.co.sfk25.annually_report.domain.entity.Group;
+import jp.co.sfk25.annually_report.domain.entity.*;
 import jp.co.sfk25.annually_report.domain.entity.Process;
-import jp.co.sfk25.annually_report.domain.entity.Tag;
 import jp.co.sfk25.annually_report.form.ArticleConds;
+import jp.co.sfk25.annually_report.form.ArticleRegister;
 import jp.co.sfk25.annually_report.service.ArticleService;
 import jp.co.sfk25.annually_report.service.GroupService;
 import jp.co.sfk25.annually_report.service.ProcessService;
 import jp.co.sfk25.annually_report.service.TagService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,5 +47,17 @@ public class ArticleRestController {
         return new ArticleCondsModel(groups, processes, tags, years);
     }
 
+    @PostMapping(path = "register")
+    public void register(@RequestBody @Validated ArticleRegister articleRegister,
+                         BindingResult bindingResult, @AuthenticationPrincipal User user) throws Exception {
+
+        // TODO エラーハンドリング修正
+
+        if (bindingResult.hasErrors()) {
+            throw new Exception("入力した値を確認してください");
+        }
+
+        articleService.register(articleRegister, user);
+    }
 
 }

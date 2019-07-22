@@ -1,9 +1,13 @@
 package jp.co.sfk25.annually_report.service;
 
 import jp.co.sfk25.annually_report.controller.model.ArticleModel;
-import jp.co.sfk25.annually_report.domain.repository.ArticleRepository;
+import jp.co.sfk25.annually_report.controller.model.ArticleRegisterModel;
+import jp.co.sfk25.annually_report.domain.entity.Tag;
+import jp.co.sfk25.annually_report.domain.entity.User;
+import jp.co.sfk25.annually_report.domain.repository.*;
 import jp.co.sfk25.annually_report.domain.entity.Article;
 import jp.co.sfk25.annually_report.form.ArticleConds;
+import jp.co.sfk25.annually_report.form.ArticleRegister;
 import org.jooq.*;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +17,7 @@ import static jp.co.sfk25.annually_report.jooq.tables.Articles.ARTICLES;
 import static jp.co.sfk25.annually_report.jooq.tables.Groups.GROUPS;
 import static jp.co.sfk25.annually_report.jooq.tables.Users.USERS;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -23,6 +28,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ArticleService {
     private final ArticleRepository articleRepository;
+    private final ArticleTagRepository articleTagRepository;
+    private final ArticleProcessRepository articleProcessRepository;
+    private final TagRepository tagRepository;
 
     public List<Article> getArticles() {
         return articleRepository.findAll();
@@ -82,6 +90,33 @@ public class ArticleService {
         for (int i=0; i<20; i++) years.add(year++);
 
         return years;
+    }
+
+
+    public void register(ArticleRegister articleRegister, User user) {
+        // モデル生成
+        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
+        ArticleRegisterModel articleRegisterModel =
+                new ArticleRegisterModel(null, user.getId(), articleRegister.getTitle(),
+                        articleRegister.getContent(), Integer.parseInt(articleRegister.getTargetYear()),
+                        articleRegister.getTag(), articleRegister.getProcessId(), timestamp, timestamp);
+
+        // 記事登録
+        Integer articleId = articleRepository.insert(articleRegisterModel).getId();
+
+        // タグIDを取得。存在しないタグ名はタグを登録し、登録したタグIDを取得する。
+        String tagValue = articleRegisterModel.getTag();
+        Tag tag = tagRepository.findByValue(tagValue);
+        Integer tagId = tag != null
+                ? tag.getId()
+                : tagRepository.insert(tagValue).getId();
+
+        // タグ登録
+        articleTagRepository.insert(articleId, tagId);
+
+        // 工程登録
+        Integer processId = articleRegisterModel.getProcessId();
+        articleProcessRepository.insert(articleId, processId);
     }
 
 }

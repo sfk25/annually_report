@@ -1,5 +1,6 @@
 package jp.co.sfk25.annually_report.domain.repository;
 
+import jp.co.sfk25.annually_report.controller.model.ArticleRegisterModel;
 import jp.co.sfk25.annually_report.jooq.tables.*;
 import jp.co.sfk25.annually_report.jooq.tables.records.ArticlesRecord;
 import jp.co.sfk25.annually_report.domain.entity.Article;
@@ -10,6 +11,7 @@ import org.jooq.impl.DSL;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
+
 import java.util.List;
 
 import static jp.co.sfk25.annually_report.jooq.tables.Articles.ARTICLES;
@@ -148,5 +150,13 @@ public class ArticleRepository {
 
             query.addJoin(table, JoinType.JOIN, table.field("article_id").eq(a.ID));
         }
+    }
+
+    public ArticlesRecord insert(ArticleRegisterModel articleRegisterModel) {
+        return dslContext.insertInto(a, a.USER_ID, a.TITLE, a.VALUE, a.CREATED_YEAR, a.CREATED_AT, a.UPDATED_AT)
+            .values(articleRegisterModel.getUserId(), articleRegisterModel.getTitle(), articleRegisterModel.getValue(),
+                    articleRegisterModel.getCreatedYear(), articleRegisterModel.getCreatedAt(), articleRegisterModel.getUpdatedAt())
+            .returning()
+            .fetchOne();
     }
 }
