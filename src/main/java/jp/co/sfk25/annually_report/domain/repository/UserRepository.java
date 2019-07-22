@@ -7,6 +7,7 @@ import jp.co.sfk25.annually_report.hoge.SexEnum;
 import jp.co.sfk25.annually_report.jooq.tables.records.UsersRecord;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
+import org.jooq.tools.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
@@ -43,11 +44,11 @@ public class UserRepository {
     public void insert(UserModel userModel) {
         Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
 
-        Timestamp enteringCompanyDate = userModel.getEnteringCompanyDate() != null
+        Timestamp enteringCompanyDate = !StringUtils.isEmpty(userModel.getEnteringCompanyDate())
                 ? Timestamp.valueOf(userModel.getEnteringCompanyDate())
                 : null;
 
-        Timestamp birthday = userModel.getBirthday() != null
+        Timestamp birthday = !StringUtils.isEmpty(userModel.getBirthday())
                 ? Timestamp.valueOf(userModel.getBirthday())
                 : null;
 
