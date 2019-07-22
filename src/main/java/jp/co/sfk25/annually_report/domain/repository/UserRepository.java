@@ -2,6 +2,8 @@ package jp.co.sfk25.annually_report.domain.repository;
 
 import jp.co.sfk25.annually_report.controller.model.UserModel;
 import jp.co.sfk25.annually_report.domain.entity.User;
+import jp.co.sfk25.annually_report.hoge.BloodTypeEnum;
+import jp.co.sfk25.annually_report.hoge.SexEnum;
 import jp.co.sfk25.annually_report.jooq.tables.records.UsersRecord;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
@@ -53,7 +55,8 @@ public class UserRepository {
                 USERS.ENTERING_COMPANY_DATE, USERS.SEX, USERS.BLOOD_TYPE, USERS.BIRTHDAY,
                 USERS.SELF_INTRODUCTION, USERS.CREATED_AT, USERS.UPDATED_AT)
                 .values(userModel.getName(), userModel.getEmail(), userModel.getPassword(), userModel.getGroupId(),
-                        enteringCompanyDate, userModel.getSex(), userModel.getBloodType(), birthday,
+                        enteringCompanyDate, SexEnum.getCodeByValue(userModel.getSex()).getCode(),
+                        BloodTypeEnum.getCodeByValue(userModel.getBloodType()).getCode(), birthday,
                         userModel.getSelfIntroduction(), timestamp, timestamp)
                 .execute();
     }

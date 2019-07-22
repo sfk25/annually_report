@@ -12,10 +12,10 @@ public class UserModel {
     private String password;
     private Integer groupId;
     private String groupName;
-    private LocalDateTime enteringCompanyDate;
-    private Integer sex;
-    private Integer bloodType;
-    private LocalDateTime birthday;
+    private String enteringCompanyDate;
+    private String sex;
+    private String bloodType;
+    private String birthday;
     private String selfIntroduction;
 
 }

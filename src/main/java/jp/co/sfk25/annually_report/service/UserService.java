@@ -4,10 +4,14 @@ import jp.co.sfk25.annually_report.controller.model.UserModel;
 import jp.co.sfk25.annually_report.domain.entity.Group;
 import jp.co.sfk25.annually_report.domain.entity.User;
 import jp.co.sfk25.annually_report.domain.repository.UserRepository;
+import jp.co.sfk25.annually_report.hoge.BloodTypeEnum;
+import jp.co.sfk25.annually_report.hoge.SexEnum;
 import lombok.RequiredArgsConstructor;
+import org.jooq.tools.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -35,7 +39,7 @@ public class UserService {
     }
 
 
-    public UserModel convertToModel(User user) {
+    private UserModel convertToModel(User user) {
         UserModel userModel = new UserModel();
 
         userModel.setName(user.getName());
@@ -44,11 +48,23 @@ public class UserService {
         Group group = groupService.getGroup(user.getGroupId());
         userModel.setGroupName(group.getValue());
 
-        userModel.setEnteringCompanyDate(user.getEnteringCompanyDate());
-        userModel.setSex(user.getSex());
-        userModel.setBloodType(user.getBloodType());
-        userModel.setBirthday(user.getBirthday());
-        userModel.setSelfIntroduction(user.getSelfIntroduction());
+        String enteringCompany =  user.getEnteringCompanyDate() != null
+                ? user.getEnteringCompanyDate().format(DateTimeFormatter.ISO_LOCAL_DATE)
+                : "未入力";
+        userModel.setEnteringCompanyDate(enteringCompany);
+
+        userModel.setSex(SexEnum.getValueByCode(user.getSex()).getValue());
+        userModel.setBloodType(BloodTypeEnum.getValueByCode(user.getBloodType()).getValue());
+
+        String birthDay =  user.getBirthday() != null
+                ? user.getBirthday().format(DateTimeFormatter.ISO_LOCAL_DATE)
+                : "未入力";
+        userModel.setBirthday(birthDay);
+
+        String selfIntroduction = !StringUtils.isEmpty(user.getSelfIntroduction())
+                ? user.getSelfIntroduction()
+                : "未入力";
+        userModel.setSelfIntroduction(selfIntroduction);
 
         return userModel;
     }
