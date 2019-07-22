@@ -4,6 +4,8 @@ import jp.co.sfk25.annually_report.domain.entity.ArticleProcess;
 import jp.co.sfk25.annually_report.jooq.tables.records.ArticlesProcessesRecord;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.Result;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -33,12 +35,11 @@ public class ArticleProcessRepository {
                 record.getProcessId());
     }
 
-    public Integer insert(Integer articleId, Integer processId) {
-        dslContext.insertInto(ARTICLES_PROCESSES, ARTICLES_PROCESSES.ARTICLE_ID, ARTICLES_PROCESSES.PROCESS_ID)
+    public Result<ArticlesProcessesRecord> insert(Integer articleId, Integer processId) {
+        return dslContext.insertInto(ARTICLES_PROCESSES, ARTICLES_PROCESSES.ARTICLE_ID, ARTICLES_PROCESSES.PROCESS_ID)
             .values(articleId, processId)
-            .execute();
-
-        return dslContext.lastID().intValue();
+            .returning()
+            .fetch();
     }
 
 }
