@@ -96,17 +96,21 @@ public class ArticleService {
 
     public void register(ArticleRegister articleRegister, User user) {
         // モデル生成
-        ArticleRegisterModel articleRegisterModel = prepareArticleRegisterModel(articleRegister, user);
+        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
+        ArticleRegisterModel articleRegisterModel =
+                new ArticleRegisterModel(null, user.getId(), articleRegister.getTitle(),
+                        articleRegister.getContent(), Integer.parseInt(articleRegister.getTargetYear()),
+                        articleRegister.getTag(), articleRegister.getProcessId(), timestamp, timestamp);
 
         // 記事登録
-        Integer articleId = articleRepository.insert(articleRegisterModel);
+        Integer articleId = articleRepository.insert(articleRegisterModel).getId();
 
         // タグIDを取得。存在しないタグ名はタグを登録し、登録したタグIDを取得する。
         String tagValue = articleRegisterModel.getTag();
         Tag tag = tagRepository.findByValue(tagValue);
         Integer tagId = tag != null
                 ? tag.getId()
-                : tagRepository.insert(tagValue);
+                : tagRepository.insert(tagValue).getId();
 
         // タグ登録
         articleTagRepository.insert(articleId, tagId);
@@ -114,29 +118,6 @@ public class ArticleService {
         // 工程登録
         Integer processId = articleRegisterModel.getProcessId();
         articleProcessRepository.insert(articleId, processId);
-    }
-
-    /**
-     * 登録のためのモデル生成
-     */
-    private ArticleRegisterModel prepareArticleRegisterModel(ArticleRegister articleRegister, User user) {
-        ArticleRegisterModel articleRegisterModel = new ArticleRegisterModel();
-
-        articleRegisterModel.setUserId(user.getId());
-
-        articleRegisterModel.setTitle(articleRegister.getTitle());
-        articleRegisterModel.setValue(articleRegister.getContent());
-
-        articleRegisterModel.setCreatedYear(Integer.parseInt(articleRegister.getTargetYear()));
-
-        articleRegisterModel.setTag(articleRegister.getTag());
-        articleRegisterModel.setProcessId(articleRegister.getProcessId());
-
-        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
-        articleRegisterModel.setCreatedAt(timestamp);
-        articleRegisterModel.setUpdatedAt(timestamp);
-
-        return articleRegisterModel;
     }
 
 }

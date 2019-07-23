@@ -152,12 +152,11 @@ public class ArticleRepository {
         }
     }
 
-    public Integer insert(ArticleRegisterModel articleRegisterModel) {
-        dslContext.insertInto(a, a.USER_ID, a.TITLE, a.VALUE, a.CREATED_YEAR, a.CREATED_AT, a.UPDATED_AT)
+    public ArticlesRecord insert(ArticleRegisterModel articleRegisterModel) {
+        return dslContext.insertInto(a, a.USER_ID, a.TITLE, a.VALUE, a.CREATED_YEAR, a.CREATED_AT, a.UPDATED_AT)
             .values(articleRegisterModel.getUserId(), articleRegisterModel.getTitle(), articleRegisterModel.getValue(),
                     articleRegisterModel.getCreatedYear(), articleRegisterModel.getCreatedAt(), articleRegisterModel.getUpdatedAt())
-            .execute();
-
-        return dslContext.lastID().intValue();
+            .returning()
+            .fetchOne();
     }
 }

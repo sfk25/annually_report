@@ -36,11 +36,10 @@ public class TagRepository {
                 record.getValue());
     }
 
-    public Integer insert(String value) {
-        dslContext.insertInto(TAGS, TAGS.VALUE)
+    public TagsRecord insert(String value) {
+        return dslContext.insertInto(TAGS, TAGS.VALUE)
             .values(value)
-            .execute();
-
-        return dslContext.lastID().intValue();
+            .returning()
+            .fetchOne();
     }
 }

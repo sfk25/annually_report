@@ -33,12 +33,11 @@ public class ArticleProcessRepository {
                 record.getProcessId());
     }
 
-    public Integer insert(Integer articleId, Integer processId) {
-        dslContext.insertInto(ARTICLES_PROCESSES, ARTICLES_PROCESSES.ARTICLE_ID, ARTICLES_PROCESSES.PROCESS_ID)
+    public ArticlesProcessesRecord insert(Integer articleId, Integer processId) {
+        return dslContext.insertInto(ARTICLES_PROCESSES, ARTICLES_PROCESSES.ARTICLE_ID, ARTICLES_PROCESSES.PROCESS_ID)
             .values(articleId, processId)
-            .execute();
-
-        return dslContext.lastID().intValue();
+            .returning()
+            .fetchOne();
     }
 
 }
