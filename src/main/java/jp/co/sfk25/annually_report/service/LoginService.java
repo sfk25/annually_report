@@ -43,6 +43,7 @@ public class LoginService {
             User principal = (User)authentication.getPrincipal();
 
             // クライアントへの返却データを設定
+            authResult.setId(principal.getId());
             authResult.setName(principal.getUsername());
             authResult.setEmail(principal.getEmail());
         } catch (Exception e) {

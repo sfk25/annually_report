@@ -42,6 +42,8 @@ public class UserService {
     private UserModel convertToModel(User user) {
         UserModel userModel = new UserModel();
 
+        if (user == null) return userModel;
+
         userModel.setName(user.getName());
         userModel.setEmail(user.getEmail());
 
