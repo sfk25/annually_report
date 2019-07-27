@@ -4,8 +4,8 @@ import jp.co.sfk25.annually_report.controller.model.UserModel;
 import jp.co.sfk25.annually_report.domain.entity.Group;
 import jp.co.sfk25.annually_report.domain.entity.User;
 import jp.co.sfk25.annually_report.domain.repository.UserRepository;
-import jp.co.sfk25.annually_report.hoge.BloodTypeEnum;
-import jp.co.sfk25.annually_report.hoge.SexEnum;
+import jp.co.sfk25.annually_report.appEnum.BloodTypeEnum;
+import jp.co.sfk25.annually_report.appEnum.SexEnum;
 import lombok.RequiredArgsConstructor;
 import org.jooq.tools.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,8 +21,8 @@ public class UserService {
     private final GroupService groupService;
     private final PasswordEncoder passwordEncoder;
 
-    public UserModel getUser(int useId) {
-        return convertToModel(userRepository.findOne(useId));
+    public UserModel getUser(int userId) {
+        return convertToModel(userRepository.findOne(userId));
     }
 
     public List<User> getUsers() {

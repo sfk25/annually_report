@@ -2,8 +2,8 @@ package jp.co.sfk25.annually_report.domain.repository;
 
 import jp.co.sfk25.annually_report.controller.model.UserModel;
 import jp.co.sfk25.annually_report.domain.entity.User;
-import jp.co.sfk25.annually_report.hoge.BloodTypeEnum;
-import jp.co.sfk25.annually_report.hoge.SexEnum;
+import jp.co.sfk25.annually_report.appEnum.BloodTypeEnum;
+import jp.co.sfk25.annually_report.appEnum.SexEnum;
 import jp.co.sfk25.annually_report.jooq.tables.records.UsersRecord;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;

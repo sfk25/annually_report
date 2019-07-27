@@ -1,10 +1,10 @@
-package jp.co.sfk25.annually_report.hoge;
+package jp.co.sfk25.annually_report.appEnum;
 
 import java.util.Arrays;
 
 public enum SexEnum {
-    WOMAN(0, "女"),
-    MAN(1, "男"),
+    WOMAN(0, "女性"),
+    MAN(1, "男性"),
     UNDEFINED(null, "未入力");
 
     private Integer code;

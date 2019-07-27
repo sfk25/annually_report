@@ -1,4 +1,4 @@
-package jp.co.sfk25.annually_report.hoge;
+package jp.co.sfk25.annually_report.appEnum;
 
 import java.util.Arrays;
 
