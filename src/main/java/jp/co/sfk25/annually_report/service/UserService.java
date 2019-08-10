@@ -1,41 +1,41 @@
 package jp.co.sfk25.annually_report.service;
 
 import jp.co.sfk25.annually_report.controller.model.UserModel;
-import jp.co.sfk25.annually_report.domain.entity.Group;
 import jp.co.sfk25.annually_report.domain.entity.User;
 import jp.co.sfk25.annually_report.domain.repository.UserRepository;
-import jp.co.sfk25.annually_report.appEnum.BloodTypeEnum;
-import jp.co.sfk25.annually_report.appEnum.SexEnum;
 import lombok.RequiredArgsConstructor;
-import org.jooq.tools.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.format.DateTimeFormatter;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private final GroupService groupService;
     private final PasswordEncoder passwordEncoder;
 
-    public UserModel getUser(int userId) {
-        return convertToModel(userRepository.findOne(userId));
-    }
 
     public List<User> getUsers() {
         return userRepository.findAll();
+    }
+
+    public UserModel getUser(int userId) {
+        return convertToModel(userRepository.findOne(userId));
     }
 
     public boolean canRegister(String name, String email) {
         return userRepository.findByUserName(name) == null && userRepository.findByEmail(email) == null;
     }
 
-    public void register(UserModel userModel) {
+    public void insert(UserModel userModel) {
         userModel.setPassword(passwordEncoder.encode(userModel.getPassword()));
         userRepository.insert(userModel);
+    }
+
+    public void update(UserModel userModel) {
+        userRepository.update(userModel);
     }
 
 
@@ -44,29 +44,25 @@ public class UserService {
 
         if (user == null) return userModel;
 
+        userModel.setId(user.getId());
         userModel.setName(user.getName());
         userModel.setEmail(user.getEmail());
+        userModel.setGroupId(user.getGroupId());
 
-        Group group = groupService.getGroup(user.getGroupId());
-        userModel.setGroupId(group.getId());
-
-        String enteringCompany =  user.getEnteringCompanyDate() != null
-                ? user.getEnteringCompanyDate().format(DateTimeFormatter.ISO_LOCAL_DATE)
-                : "未入力";
-        userModel.setEnteringCompanyDate(enteringCompany);
+        Timestamp enteringCompanyDate = user.getEnteringCompanyDate() != null
+                ? Timestamp.valueOf(user.getEnteringCompanyDate())
+                : null;
+        userModel.setEnteringCompanyDate(enteringCompanyDate);
 
         userModel.setSex(user.getSex());
         userModel.setBloodType(user.getBloodType());
 
-        String birthDay =  user.getBirthday() != null
-                ? user.getBirthday().format(DateTimeFormatter.ISO_LOCAL_DATE)
-                : "未入力";
-        userModel.setBirthday(birthDay);
+        Timestamp birthday = user.getBirthday() != null
+                ? Timestamp.valueOf(user.getBirthday())
+                : null;
+        userModel.setBirthday(birthday);
 
-        String selfIntroduction = !StringUtils.isEmpty(user.getSelfIntroduction())
-                ? user.getSelfIntroduction()
-                : "未入力";
-        userModel.setSelfIntroduction(selfIntroduction);
+        userModel.setSelfIntroduction(user.getSelfIntroduction());
 
         return userModel;
     }

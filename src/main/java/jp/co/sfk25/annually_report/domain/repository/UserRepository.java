@@ -2,12 +2,9 @@ package jp.co.sfk25.annually_report.domain.repository;
 
 import jp.co.sfk25.annually_report.controller.model.UserModel;
 import jp.co.sfk25.annually_report.domain.entity.User;
-import jp.co.sfk25.annually_report.appEnum.BloodTypeEnum;
-import jp.co.sfk25.annually_report.appEnum.SexEnum;
 import jp.co.sfk25.annually_report.jooq.tables.records.UsersRecord;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
-import org.jooq.tools.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
@@ -42,22 +39,35 @@ public class UserRepository {
     }
 
     public void insert(UserModel userModel) {
-        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
+        Timestamp now = Timestamp.valueOf(LocalDateTime.now());
 
-        Timestamp enteringCompanyDate = !StringUtils.isEmpty(userModel.getEnteringCompanyDate())
-                ? Timestamp.valueOf(userModel.getEnteringCompanyDate())
-                : null;
+        dslContext.insertInto(USERS)
+                .set(USERS.NAME, userModel.getName())
+                .set(USERS.EMAIL, userModel.getEmail())
+                .set(USERS.PASSWORD, userModel.getPassword())
+                .set(USERS.GROUP_ID, userModel.getGroupId())
+                .set(USERS.ENTERING_COMPANY_DATE, userModel.getEnteringCompanyDate())
+                .set(USERS.SEX, userModel.getSex())
+                .set(USERS.BLOOD_TYPE, userModel.getBloodType())
+                .set(USERS.BIRTHDAY, userModel.getBirthday())
+                .set(USERS.SELF_INTRODUCTION, userModel.getSelfIntroduction())
+                .set(USERS.CREATED_AT, now)
+                .set(USERS.UPDATED_AT, now)
+                .execute();
+    }
 
-        Timestamp birthday = !StringUtils.isEmpty(userModel.getBirthday())
-                ? Timestamp.valueOf(userModel.getBirthday())
-                : null;
-
-        dslContext.insertInto(USERS, USERS.NAME, USERS.EMAIL, USERS.PASSWORD, USERS.GROUP_ID,
-                USERS.ENTERING_COMPANY_DATE, USERS.SEX, USERS.BLOOD_TYPE, USERS.BIRTHDAY,
-                USERS.SELF_INTRODUCTION, USERS.CREATED_AT, USERS.UPDATED_AT)
-                .values(userModel.getName(), userModel.getEmail(), userModel.getPassword(), userModel.getGroupId(),
-                        enteringCompanyDate, userModel.getSex(), userModel.getBloodType(), birthday,
-                        userModel.getSelfIntroduction(), timestamp, timestamp)
+    public void update(UserModel userModel) {
+        dslContext.update(USERS)
+                .set(USERS.NAME, userModel.getName())
+                .set(USERS.EMAIL, userModel.getEmail())
+                .set(USERS.GROUP_ID, userModel.getGroupId())
+                .set(USERS.ENTERING_COMPANY_DATE, userModel.getEnteringCompanyDate())
+                .set(USERS.SEX, userModel.getSex())
+                .set(USERS.BLOOD_TYPE, userModel.getBloodType())
+                .set(USERS.BIRTHDAY, userModel.getBirthday())
+                .set(USERS.SELF_INTRODUCTION, userModel.getSelfIntroduction())
+                .set(USERS.UPDATED_AT, Timestamp.valueOf(LocalDateTime.now()))
+                .where(USERS.ID.equal(userModel.getId()))
                 .execute();
     }
 
