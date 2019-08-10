@@ -48,15 +48,15 @@ public class UserService {
         userModel.setEmail(user.getEmail());
 
         Group group = groupService.getGroup(user.getGroupId());
-        userModel.setGroupName(group.getValue());
+        userModel.setGroupId(group.getId());
 
         String enteringCompany =  user.getEnteringCompanyDate() != null
                 ? user.getEnteringCompanyDate().format(DateTimeFormatter.ISO_LOCAL_DATE)
                 : "未入力";
         userModel.setEnteringCompanyDate(enteringCompany);
 
-        userModel.setSex(SexEnum.getValueByCode(user.getSex()).getValue());
-        userModel.setBloodType(BloodTypeEnum.getValueByCode(user.getBloodType()).getValue());
+        userModel.setSex(user.getSex());
+        userModel.setBloodType(user.getBloodType());
 
         String birthDay =  user.getBirthday() != null
                 ? user.getBirthday().format(DateTimeFormatter.ISO_LOCAL_DATE)

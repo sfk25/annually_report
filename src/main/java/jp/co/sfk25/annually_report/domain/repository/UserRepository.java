@@ -56,8 +56,7 @@ public class UserRepository {
                 USERS.ENTERING_COMPANY_DATE, USERS.SEX, USERS.BLOOD_TYPE, USERS.BIRTHDAY,
                 USERS.SELF_INTRODUCTION, USERS.CREATED_AT, USERS.UPDATED_AT)
                 .values(userModel.getName(), userModel.getEmail(), userModel.getPassword(), userModel.getGroupId(),
-                        enteringCompanyDate, SexEnum.getCodeByValue(userModel.getSex()).getCode(),
-                        BloodTypeEnum.getCodeByValue(userModel.getBloodType()).getCode(), birthday,
+                        enteringCompanyDate, userModel.getSex(), userModel.getBloodType(), birthday,
                         userModel.getSelfIntroduction(), timestamp, timestamp)
                 .execute();
     }
