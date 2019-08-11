@@ -76,7 +76,7 @@ public class UserRestController {
         userModel.setGroupId(userUpdate.getGroupId());
 
         Timestamp enteringCompanyDate = !StringUtils.isEmpty(userUpdate.getEnteringCompanyDate())
-                ? Timestamp.valueOf(userUpdate.getEnteringCompanyDate() + "00:00:00")
+                ? Timestamp.valueOf(userUpdate.getEnteringCompanyDate() + " 00:00:00")
                 : null;
         userModel.setEnteringCompanyDate(enteringCompanyDate);
 
@@ -84,9 +84,9 @@ public class UserRestController {
         userModel.setBloodType(userUpdate.getBloodType());
 
         Timestamp birthday = !StringUtils.isEmpty(userUpdate.getBirthday())
-                ? Timestamp.valueOf(userUpdate.getBirthday() + "00:00:00")
+                ? Timestamp.valueOf(userUpdate.getBirthday() + " 00:00:00")
                 : null;
-        userModel.setEnteringCompanyDate(birthday);
+        userModel.setBirthday(birthday);
 
         userModel.setSelfIntroduction(userUpdate.getSelfIntroduction());
 
