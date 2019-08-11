@@ -25,13 +25,23 @@ public class User implements UserDetails {
   private final String password;
 
   @NonNull
-  private final Integer group_id;
+  private final Integer groupId;
+
+  private final LocalDateTime enteringCompanyDate;
+
+  private final Integer sex;
+
+  private final Integer bloodType;
+
+  private final LocalDateTime birthday;
+
+  private final String selfIntroduction;
 
   @NonNull
-  private final LocalDateTime created_at;
+  private final LocalDateTime createdAt;
 
   @NonNull
-  private final LocalDateTime updated_at;
+  private final LocalDateTime updatedAt;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -63,8 +73,12 @@ public class User implements UserDetails {
     return true;
   }
 
-  public static User create(String name, String email, String password, int groupId) {
+  public static User create(String name, String email, String password, int groupId,
+                            LocalDateTime entering_companyDate, Integer sex, Integer bloodType,
+                            LocalDateTime birthday, String selfIntroduction) {
     LocalDateTime now = LocalDateTime.now();
-    return User.of(null, name, email, password, groupId, now, now);
+    return User.of(null, name, email, password, groupId,
+            entering_companyDate, sex, bloodType,
+            birthday, selfIntroduction, now, now);
   }
 }

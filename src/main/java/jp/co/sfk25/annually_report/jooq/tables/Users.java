@@ -40,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Users extends TableImpl<UsersRecord> {
 
-    private static final long serialVersionUID = 943156520;
+    private static final long serialVersionUID = 674218244;
 
     /**
      * The reference instance of <code>sfk25.users</code>
@@ -76,6 +76,36 @@ public class Users extends TableImpl<UsersRecord> {
     public final TableField<UsersRecord, String> PASSWORD = createField("password", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
+     * The column <code>sfk25.users.group_id</code>.
+     */
+    public final TableField<UsersRecord, Integer> GROUP_ID = createField("group_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
+    /**
+     * The column <code>sfk25.users.entering_company_date</code>.
+     */
+    public final TableField<UsersRecord, Timestamp> ENTERING_COMPANY_DATE = createField("entering_company_date", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+
+    /**
+     * The column <code>sfk25.users.sex</code>.
+     */
+    public final TableField<UsersRecord, Integer> SEX = createField("sex", org.jooq.impl.SQLDataType.INTEGER, this, "");
+
+    /**
+     * The column <code>sfk25.users.blood_type</code>.
+     */
+    public final TableField<UsersRecord, Integer> BLOOD_TYPE = createField("blood_type", org.jooq.impl.SQLDataType.INTEGER, this, "");
+
+    /**
+     * The column <code>sfk25.users.birthday</code>.
+     */
+    public final TableField<UsersRecord, Timestamp> BIRTHDAY = createField("birthday", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+
+    /**
+     * The column <code>sfk25.users.self_introduction</code>.
+     */
+    public final TableField<UsersRecord, String> SELF_INTRODUCTION = createField("self_introduction", org.jooq.impl.SQLDataType.VARCHAR(64), this, "");
+
+    /**
      * The column <code>sfk25.users.created_at</code>.
      */
     public final TableField<UsersRecord, Timestamp> CREATED_AT = createField("created_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
@@ -84,11 +114,6 @@ public class Users extends TableImpl<UsersRecord> {
      * The column <code>sfk25.users.updated_at</code>.
      */
     public final TableField<UsersRecord, Timestamp> UPDATED_AT = createField("updated_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
-
-    /**
-     * The column <code>sfk25.users.group_id</code>.
-     */
-    public final TableField<UsersRecord, Integer> GROUP_ID = createField("group_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * Create a <code>sfk25.users</code> table reference

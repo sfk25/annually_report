@@ -56,6 +56,7 @@ public class ArticleService {
             article.setId(record.getValue(ARTICLES.ID));
             article.setTitle(record.getValue(ARTICLES.TITLE));
             article.setUserName(record.getValue(USERS.NAME));
+            article.setUserId(record.getValue(USERS.ID));
             article.setGroupName(record.getValue(GROUPS.VALUE));
 
             // 使用した技術

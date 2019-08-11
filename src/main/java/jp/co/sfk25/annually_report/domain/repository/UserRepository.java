@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static jp.co.sfk25.annually_report.jooq.tables.Users.USERS;
@@ -40,10 +39,35 @@ public class UserRepository {
     }
 
     public void insert(UserModel userModel) {
-        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
+        Timestamp now = Timestamp.valueOf(LocalDateTime.now());
 
-        dslContext.insertInto(USERS, USERS.NAME, USERS.EMAIL, USERS.PASSWORD, USERS.GROUP_ID, USERS.CREATED_AT, USERS.UPDATED_AT)
-                .values(userModel.getName(), userModel.getEmail(), userModel.getPassword(), userModel.getGroupId(), timestamp, timestamp)
+        dslContext.insertInto(USERS)
+                .set(USERS.NAME, userModel.getName())
+                .set(USERS.EMAIL, userModel.getEmail())
+                .set(USERS.PASSWORD, userModel.getPassword())
+                .set(USERS.GROUP_ID, userModel.getGroupId())
+                .set(USERS.ENTERING_COMPANY_DATE, userModel.getEnteringCompanyDate())
+                .set(USERS.SEX, userModel.getSex())
+                .set(USERS.BLOOD_TYPE, userModel.getBloodType())
+                .set(USERS.BIRTHDAY, userModel.getBirthday())
+                .set(USERS.SELF_INTRODUCTION, userModel.getSelfIntroduction())
+                .set(USERS.CREATED_AT, now)
+                .set(USERS.UPDATED_AT, now)
+                .execute();
+    }
+
+    public void update(UserModel userModel) {
+        dslContext.update(USERS)
+                .set(USERS.NAME, userModel.getName())
+                .set(USERS.EMAIL, userModel.getEmail())
+                .set(USERS.GROUP_ID, userModel.getGroupId())
+                .set(USERS.ENTERING_COMPANY_DATE, userModel.getEnteringCompanyDate())
+                .set(USERS.SEX, userModel.getSex())
+                .set(USERS.BLOOD_TYPE, userModel.getBloodType())
+                .set(USERS.BIRTHDAY, userModel.getBirthday())
+                .set(USERS.SELF_INTRODUCTION, userModel.getSelfIntroduction())
+                .set(USERS.UPDATED_AT, Timestamp.valueOf(LocalDateTime.now()))
+                .where(USERS.ID.equal(userModel.getId()))
                 .execute();
     }
 
@@ -55,6 +79,15 @@ public class UserRepository {
                 // TODO パスワード復号化処理
                 record.getPassword(),
                 record.getGroupId(),
+                record.getEnteringCompanyDate() != null
+                        ? record.getEnteringCompanyDate().toLocalDateTime()
+                        : null,
+                record.getSex(),
+                record.getBloodType(),
+                record.getBirthday() != null
+                        ? record.getBirthday().toLocalDateTime()
+                        : null,
+                record.getSelfIntroduction(),
                 record.getCreatedAt().toLocalDateTime(),
                 record.getUpdatedAt().toLocalDateTime());
     }
