@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class ArticleConds {
 
+    private Integer id;
     private String title;
     private int groupId;
     private String userName;

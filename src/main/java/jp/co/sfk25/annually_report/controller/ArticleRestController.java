@@ -32,6 +32,11 @@ public class ArticleRestController {
         return articleService.getArticles();
     }
 
+    @GetMapping(path = "detail/{id}")
+    public ArticleModel get(@PathVariable("id") int id) {
+        return articleService.getArticle(id);
+    }
+
     @PostMapping(path = "search")
     public List<ArticleModel> search(@RequestBody ArticleConds articleConds) {
         return articleService.findByConds(articleConds);

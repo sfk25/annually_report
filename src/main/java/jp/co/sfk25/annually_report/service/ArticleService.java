@@ -36,63 +36,9 @@ public class ArticleService {
         return articleRepository.findAll();
     }
 
-    public List<ArticleModel> findByConds(ArticleConds articleConds){
-        // 取得
-        Result<Record> result = articleRepository.findByConds(articleConds);
-
-        // 変換
-        return convertToModel(result);
+    public ArticleModel getArticle(Integer id) {
+        return convertToModel(articleRepository.findOne(id));
     }
-
-    private List<ArticleModel> convertToModel(Result<Record> result) {
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
-
-        List<ArticleModel> articles = new ArrayList<>();
-
-        // モデルに設定
-        result.forEach(record -> {
-            ArticleModel article = new ArticleModel();
-
-            article.setId(record.getValue(ARTICLES.ID));
-            article.setTitle(record.getValue(ARTICLES.TITLE));
-            article.setUserName(record.getValue(USERS.NAME));
-            article.setUserId(record.getValue(USERS.ID));
-            article.setGroupName(record.getValue(GROUPS.VALUE));
-
-            // 使用した技術
-            List<String> tags = !StringUtils.isEmpty(record.getValue("tags"))
-                    ? Arrays.asList(record.getValue("tags").toString().split(","))
-                    : new ArrayList<>();
-            article.setTags(tags);
-
-            // 担当した工程
-            List<String> processes = !StringUtils.isEmpty(record.getValue("processes"))
-                    ? Arrays.asList(record.getValue("processes").toString().split(","))
-                    : new ArrayList<>();
-            article.setProcesses(processes);
-
-            article.setCreatedYear(record.getValue(ARTICLES.CREATED_YEAR));
-            article.setCreatedAt(formatter.format(record.getValue(ARTICLES.CREATED_AT).toLocalDateTime()));
-
-            articles.add(article);
-        });
-
-        return articles;
-    }
-
-    /**
-     * 現在の西暦から前後それぞれ10年分の西暦のリストを作成
-     */
-    public List<Integer> prepareYears(){
-        List<Integer> years = new ArrayList<>();
-
-        int year = LocalDateTime.now().minusYears(10).getYear();
-
-        for (int i=0; i<20; i++) years.add(year++);
-
-        return years;
-    }
-
 
     public void register(ArticleRegister articleRegister, User user) {
         // モデル生成
@@ -118,6 +64,64 @@ public class ArticleService {
         // 工程登録
         Integer processId = articleRegisterModel.getProcessId();
         articleProcessRepository.insert(articleId, processId);
+    }
+
+
+    public List<ArticleModel> findByConds(ArticleConds articleConds){
+        // 取得
+        Result<Record> result = articleRepository.findByConds(articleConds);
+
+        // 変換
+        return convertToModelList(result);
+    }
+
+    private List<ArticleModel> convertToModelList(Result<Record> result) {
+        List<ArticleModel> articles = new ArrayList<>();
+
+        result.forEach(record -> articles.add(convertToModel(record)));
+
+        return articles;
+    }
+
+    private ArticleModel convertToModel(Record record) {
+        ArticleModel article = new ArticleModel();
+
+        article.setId(record.getValue(ARTICLES.ID));
+        article.setTitle(record.getValue(ARTICLES.TITLE));
+        article.setValue(record.getValue(ARTICLES.VALUE));
+        article.setUserName(record.getValue(USERS.NAME));
+        article.setUserId(record.getValue(USERS.ID));
+        article.setGroupName(record.getValue(GROUPS.VALUE));
+
+        // 使用した技術
+        List<String> tags = !StringUtils.isEmpty(record.getValue("tags"))
+                ? Arrays.asList(record.getValue("tags").toString().split(","))
+                : new ArrayList<>();
+        article.setTags(tags);
+
+        // 担当した工程
+        List<String> processes = !StringUtils.isEmpty(record.getValue("processes"))
+                ? Arrays.asList(record.getValue("processes").toString().split(","))
+                : new ArrayList<>();
+        article.setProcesses(processes);
+
+        article.setCreatedYear(record.getValue(ARTICLES.CREATED_YEAR));
+        article.setCreatedAt(DateTimeFormatter.ISO_LOCAL_DATE
+                .format(record.getValue(ARTICLES.CREATED_AT).toLocalDateTime()));
+        return article;
+    }
+
+    /**
+     * 現在の西暦から前後それぞれ10年分の西暦のリストを作成
+     */
+    public List<Integer> prepareYears(){
+        List<Integer> years = new ArrayList<>();
+
+        int year = LocalDateTime.now().minusYears(10).getYear();
+
+        for (int i=0; i<20; i++) years.add(year++);
+
+        return years;
     }
 
 }
