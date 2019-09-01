@@ -21,7 +21,6 @@ public class User implements UserDetails {
   @NonNull
   private final String email;
 
-  @NonNull
   private final String password;
 
   @NonNull
