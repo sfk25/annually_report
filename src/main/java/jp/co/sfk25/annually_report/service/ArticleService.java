@@ -45,7 +45,7 @@ public class ArticleService {
         Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
         ArticleRegisterModel articleRegisterModel =
                 new ArticleRegisterModel(null, user.getId(), articleRegister.getTitle(),
-                        articleRegister.getContent(), Integer.parseInt(articleRegister.getTargetYear()),
+                        articleRegister.getContent(), Integer.parseInt(articleRegister.getCreatedYear()),
                         articleRegister.getTag(), articleRegister.getProcessId(), timestamp, timestamp);
 
         // 記事登録

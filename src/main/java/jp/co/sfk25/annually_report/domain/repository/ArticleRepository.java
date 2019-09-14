@@ -105,7 +105,7 @@ public class ArticleRepository {
          * |           1| 要件定義,設計,実装|
          * +------------+----------------+
          */
-        return dslContext.select(ap.ARTICLE_ID, DSL.field("GROUP_CONCAT(processes.value SEPARATOR ',')").as("processes"))
+        return dslContext.select(ap.ARTICLE_ID, DSL.field("GROUP_CONCAT(processes.id SEPARATOR ',')").as("processes"))
                 .from(ap)
                 .join(PROCESSES).on(ap.PROCESS_ID.eq(PROCESSES.ID))
                 .groupBy(ap.ARTICLE_ID)

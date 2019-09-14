@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 public class ArticleRegister {
 
     @NotNull
-    private String targetYear;
+    private String createdYear;
     @NotNull
     @Size(min = 1, max = 255)
     private String title;
