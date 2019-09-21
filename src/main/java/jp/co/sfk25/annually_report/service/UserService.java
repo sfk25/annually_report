@@ -43,27 +43,27 @@ public class UserService {
     private UserModel convertToModel(User user) {
         UserModel userModel = new UserModel();
 
-        if (user != null) {
-            userModel.setId(user.getId());
-            userModel.setName(user.getName());
-            userModel.setEmail(user.getEmail());
-            userModel.setGroupId(user.getGroupId());
+        if (user == null) return userModel;
 
-            Timestamp enteringCompanyDate = user.getEnteringCompanyDate() != null
-                    ? Timestamp.valueOf(user.getEnteringCompanyDate())
-                    : null;
-            userModel.setEnteringCompanyDate(enteringCompanyDate);
+        userModel.setId(user.getId());
+        userModel.setName(user.getName());
+        userModel.setEmail(user.getEmail());
+        userModel.setGroupId(user.getGroupId());
 
-            userModel.setSex(user.getSex());
-            userModel.setBloodType(user.getBloodType());
+        Timestamp enteringCompanyDate = user.getEnteringCompanyDate() != null
+                ? Timestamp.valueOf(user.getEnteringCompanyDate())
+                : null;
+        userModel.setEnteringCompanyDate(enteringCompanyDate);
 
-            Timestamp birthday = user.getBirthday() != null
-                    ? Timestamp.valueOf(user.getBirthday())
-                    : null;
-            userModel.setBirthday(birthday);
+        userModel.setSex(user.getSex());
+        userModel.setBloodType(user.getBloodType());
 
-            userModel.setSelfIntroduction(user.getSelfIntroduction());
-        }
+        Timestamp birthday = user.getBirthday() != null
+                ? Timestamp.valueOf(user.getBirthday())
+                : null;
+        userModel.setBirthday(birthday);
+
+        userModel.setSelfIntroduction(user.getSelfIntroduction());
 
         return userModel;
     }
