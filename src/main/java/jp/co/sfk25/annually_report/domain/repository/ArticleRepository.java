@@ -72,6 +72,15 @@ public class ArticleRepository {
                 .fetchOne();
     }
 
+    public void update(ArticleRegisterModel articleRegisterModel) {
+        dslContext.update(ARTICLES)
+                .set(ARTICLES.TITLE, articleRegisterModel.getTitle())
+                .set(ARTICLES.CREATED_YEAR, articleRegisterModel.getCreatedYear())
+                .set(ARTICLES.VALUE, articleRegisterModel.getValue())
+                .where(ARTICLES.ID.equal(articleRegisterModel.getId()))
+                .execute();
+    }
+
     private Article toEntity(ArticlesRecord record) {
         return Article.of(
                 record.getId(),

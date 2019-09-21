@@ -53,7 +53,7 @@ public class ArticleRestController {
     }
 
     @PostMapping(path = "register")
-    public void register(@RequestBody @Validated ArticleRegister articleRegister,
+    public Integer register(@RequestBody @Validated ArticleRegister articleRegister,
                          BindingResult bindingResult, @AuthenticationPrincipal User user) throws Exception {
 
         // TODO エラーハンドリング修正
@@ -62,7 +62,20 @@ public class ArticleRestController {
             throw new Exception("入力した値を確認してください");
         }
 
-        articleService.register(articleRegister, user);
+        return articleService.register(articleRegister, user);
+    }
+
+    @PostMapping(path = "update")
+    public void update(@RequestBody @Validated ArticleRegister articleRegister,
+                       BindingResult bindingResult, @AuthenticationPrincipal User user) throws Exception {
+
+        // TODO エラーハンドリング修正
+
+        if (bindingResult.hasErrors()) {
+            throw new Exception("入力した値を確認してください");
+        }
+
+        articleService.update(articleRegister);
     }
 
 }

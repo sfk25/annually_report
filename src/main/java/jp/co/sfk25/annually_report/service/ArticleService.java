@@ -11,6 +11,7 @@ import jp.co.sfk25.annually_report.form.ArticleRegister;
 import org.jooq.*;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import static jp.co.sfk25.annually_report.jooq.tables.Articles.ARTICLES;
@@ -40,7 +41,29 @@ public class ArticleService {
         return convertToModel(articleRepository.findOne(id));
     }
 
-    public void register(ArticleRegister articleRegister, User user) {
+    public List<ArticleModel> findByConds(ArticleConds articleConds){
+        // 取得
+        Result<Record> result = articleRepository.findByConds(articleConds);
+
+        // 変換
+        return convertToModelList(result);
+    }
+
+    /**
+     * 現在の西暦から前後それぞれ10年分の西暦のリストを作成
+     */
+    public List<Integer> prepareYears(){
+        List<Integer> years = new ArrayList<>();
+
+        int year = LocalDateTime.now().minusYears(10).getYear();
+
+        for (int i=0; i<20; i++) years.add(year++);
+
+        return years;
+    }
+
+    @Transactional
+    public Integer register(ArticleRegister articleRegister, User user) {
         // モデル生成
         Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
         ArticleRegisterModel articleRegisterModel =
@@ -64,15 +87,37 @@ public class ArticleService {
         // 工程登録
         Integer processId = articleRegisterModel.getProcessId();
         articleProcessRepository.insert(articleId, processId);
+
+        return articleId;
     }
 
+    @Transactional
+    public void update(ArticleRegister articleRegister) {
+        // モデル生成
+        ArticleRegisterModel articleRegisterModel = new ArticleRegisterModel();
+        articleRegisterModel.setId(articleRegister.getId());
+        articleRegisterModel.setTitle(articleRegister.getTitle());
+        articleRegisterModel.setCreatedYear(Integer.parseInt(articleRegister.getCreatedYear()));
+        articleRegisterModel.setValue(articleRegister.getContent());
+        articleRegisterModel.setTag(articleRegister.getTag());
+        articleRegisterModel.setProcessId(articleRegister.getProcessId());
 
-    public List<ArticleModel> findByConds(ArticleConds articleConds){
-        // 取得
-        Result<Record> result = articleRepository.findByConds(articleConds);
+        // 記事更新
+        articleRepository.update(articleRegisterModel);
 
-        // 変換
-        return convertToModelList(result);
+        // タグIDを取得。存在しないタグ名はタグを登録し、登録したタグIDを取得する。
+        String tagValue = articleRegisterModel.getTag();
+        Tag tag = tagRepository.findByValue(tagValue);
+        Integer tagId = tag != null
+                ? tag.getId()
+                : tagRepository.insert(tagValue).getId();
+
+        // タグ更新
+        articleTagRepository.update(articleRegisterModel.getId(), tagId);
+
+        // 工程更新
+        Integer processId = articleRegisterModel.getProcessId();
+        articleProcessRepository.update(articleRegisterModel.getId(), processId);
     }
 
     private List<ArticleModel> convertToModelList(Result<Record> result) {
@@ -109,19 +154,6 @@ public class ArticleService {
         article.setCreatedAt(DateTimeFormatter.ISO_LOCAL_DATE
                 .format(record.getValue(ARTICLES.CREATED_AT).toLocalDateTime()));
         return article;
-    }
-
-    /**
-     * 現在の西暦から前後それぞれ10年分の西暦のリストを作成
-     */
-    public List<Integer> prepareYears(){
-        List<Integer> years = new ArrayList<>();
-
-        int year = LocalDateTime.now().minusYears(10).getYear();
-
-        for (int i=0; i<20; i++) years.add(year++);
-
-        return years;
     }
 
 }

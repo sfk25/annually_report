@@ -8,6 +8,7 @@ import javax.validation.constraints.Size;
 @Data
 public class ArticleRegister {
 
+    private Integer id;
     @NotNull
     private String createdYear;
     @NotNull

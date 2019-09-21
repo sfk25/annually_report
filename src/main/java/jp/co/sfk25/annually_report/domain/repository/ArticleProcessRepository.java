@@ -40,4 +40,18 @@ public class ArticleProcessRepository {
             .fetchOne();
     }
 
+    public void update(Integer articleId, Integer processId) {
+        // TODO updateの方法
+        delete(articleId);
+        insert(articleId, processId);
+    }
+
+    public void delete(Integer articleId) {
+        dslContext
+                .delete(ARTICLES_PROCESSES)
+                .where(ARTICLES_PROCESSES.ARTICLE_ID.equal(articleId))
+                .execute();
+
+    }
+
 }

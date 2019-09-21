@@ -39,4 +39,17 @@ public class ArticleTagRepository {
                 .execute();
     }
 
+    public void update(Integer articleId, Integer tagId) {
+        // TODO updateの方法
+        delete(articleId);
+        insert(articleId,tagId);
+    }
+
+    public void delete(Integer articleId) {
+        dslContext
+                .delete(ARTICLES_TAGS)
+                .where(ARTICLES_TAGS.ARTICLE_ID.equal(articleId))
+                .execute();
+    }
+
 }
