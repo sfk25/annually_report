@@ -41,7 +41,6 @@ public class ArticleProcessRepository {
     }
 
     public void update(Integer articleId, Integer processId) {
-        // TODO updateの方法
         delete(articleId);
         insert(articleId, processId);
     }

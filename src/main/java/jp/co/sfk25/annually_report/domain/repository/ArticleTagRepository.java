@@ -40,7 +40,6 @@ public class ArticleTagRepository {
     }
 
     public void update(Integer articleId, Integer tagId) {
-        // TODO updateの方法
         delete(articleId);
         insert(articleId,tagId);
     }

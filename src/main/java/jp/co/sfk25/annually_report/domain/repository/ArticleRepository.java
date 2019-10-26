@@ -77,6 +77,7 @@ public class ArticleRepository {
                 .set(ARTICLES.TITLE, articleRegisterModel.getTitle())
                 .set(ARTICLES.CREATED_YEAR, articleRegisterModel.getCreatedYear())
                 .set(ARTICLES.VALUE, articleRegisterModel.getValue())
+                .set(ARTICLES.UPDATED_AT, articleRegisterModel.getUpdatedAt())
                 .where(ARTICLES.ID.equal(articleRegisterModel.getId()))
                 .execute();
     }

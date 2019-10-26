@@ -94,6 +94,7 @@ public class ArticleService {
     @Transactional
     public void update(ArticleRegister articleRegister) {
         // モデル生成
+        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
         ArticleRegisterModel articleRegisterModel = new ArticleRegisterModel();
         articleRegisterModel.setId(articleRegister.getId());
         articleRegisterModel.setTitle(articleRegister.getTitle());
@@ -101,6 +102,7 @@ public class ArticleService {
         articleRegisterModel.setValue(articleRegister.getContent());
         articleRegisterModel.setTag(articleRegister.getTag());
         articleRegisterModel.setProcessId(articleRegister.getProcessId());
+        articleRegisterModel.setUpdatedAt(timestamp);
 
         // 記事更新
         articleRepository.update(articleRegisterModel);
