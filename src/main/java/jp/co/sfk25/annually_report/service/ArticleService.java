@@ -65,17 +65,15 @@ public class ArticleService {
     @Transactional
     public Integer register(ArticleRegister articleRegister, User user) {
         // モデル生成
-        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
-        ArticleRegisterModel articleRegisterModel =
-                new ArticleRegisterModel(null, user.getId(), articleRegister.getTitle(),
-                        articleRegister.getContent(), Integer.parseInt(articleRegister.getCreatedYear()),
-                        articleRegister.getTag(), articleRegister.getProcessId(), timestamp, timestamp);
+        Article article = Article.create(null, user.getId(),
+                articleRegister.getTitle(), articleRegister.getContent(),
+                Integer.parseInt(articleRegister.getCreatedYear()));
 
         // 記事登録
-        Integer articleId = articleRepository.insert(articleRegisterModel).getId();
+        Integer articleId = articleRepository.insert(article).getId();
 
         // タグIDを取得。存在しないタグ名はタグを登録し、登録したタグIDを取得する。
-        String tagValue = articleRegisterModel.getTag();
+        String tagValue = articleRegister.getTag();
         Tag tag = tagRepository.findByValue(tagValue);
         Integer tagId = tag != null
                 ? tag.getId()
@@ -85,8 +83,7 @@ public class ArticleService {
         articleTagRepository.insert(articleId, tagId);
 
         // 工程登録
-        Integer processId = articleRegisterModel.getProcessId();
-        articleProcessRepository.insert(articleId, processId);
+        articleProcessRepository.insert(articleId, articleRegister.getProcessId());
 
         return articleId;
     }
