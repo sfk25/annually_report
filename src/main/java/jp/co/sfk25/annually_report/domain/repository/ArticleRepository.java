@@ -65,11 +65,11 @@ public class ArticleRepository {
         return query.fetch();
     }
 
-    public ArticlesRecord insert(Article article) {
-        return dslContext.insertInto(a)
+    public Article insert(Article article) {
+        return toEntity(dslContext.insertInto(a)
                 .set(toRecord(article))
                 .returning()
-                .fetchOne();
+                .fetchOne());
     }
 
     public void update(ArticleRegisterModel articleRegisterModel) {
