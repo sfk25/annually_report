@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class ArticleRegisterModel {
 
-    private Integer articleId;
+    private Integer id;
     private Integer userId;
 
     private String title;

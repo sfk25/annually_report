@@ -13,7 +13,7 @@ public class Article {
   private final Integer id;
 
   @NonNull
-  private final Integer user_id;
+  private final Integer userId;
 
   @NonNull
   private final String title;
@@ -22,13 +22,13 @@ public class Article {
   private final String value;
 
   @NonNull
-  private final Integer created_year;
+  private final Integer createdYear;
 
   @NonNull
-  private final LocalDateTime created_at;
+  private final LocalDateTime createdAt;
 
   @NonNull
-  private final LocalDateTime updated_at;
+  private final LocalDateTime updatedAt;
 
   public static Article create(Integer id, Integer userId, String title, String value, int createdYear) {
     LocalDateTime now = LocalDateTime.now();

@@ -12,6 +12,7 @@ import java.util.List;
 public class ArticleModel {
     private Integer id;
     private String title;
+    private String value;
     private String userName;
     private Integer userId;
     private String groupName;

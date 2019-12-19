@@ -8,8 +8,9 @@ import javax.validation.constraints.Size;
 @Data
 public class ArticleRegister {
 
+    private Integer id;
     @NotNull
-    private String targetYear;
+    private String createdYear;
     @NotNull
     @Size(min = 1, max = 255)
     private String title;
